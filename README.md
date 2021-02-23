@@ -1,8 +1,13 @@
 ###Project Name 
+
 Fresh Results
+
 ###Description
+
 Google Chrome Extension that filters out search result suggestions that "spoil" or reveal plot elements of the media (shows, movies, books, etc.). 
+
 ###Business Model
+
 #### Stakeholders
 * Users - people who want to be "protected" from spoiler search suggestions.
 * Businesses - companies who produce media that can be spoiled, they want their media to garner fame and interest
