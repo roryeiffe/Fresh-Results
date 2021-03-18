@@ -50,7 +50,7 @@ cd Spoiler-Block
 Run the following npm commands:
 ```
 npm install
-npm run build
+npm run build (run this every time you make changes)
 ```
 - Next, go to chrome://extensions/. 
 - Enable developer mode on the top right of the webpage. 
