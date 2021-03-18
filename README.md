@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+### Project Name
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Spoiler Block
 
-## Available Scripts
+### Team Members
 
-In the project directory, you can run:
+#### UI Team
+Rory Eiffe <br/>
+Covenant Faluyi <br/>
+#### Back-End Team
+Josh Wildfeuer <br/>
+Ben Unger <br/>
+#### Undecided/Full Stack
+Victoria Savage <br/>
+Abdul-Muiz Yusuff <br/>
+Serena Chen
 
-### `yarn start`
+### Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Spoiler Block is a Google Chrome Extension that filters out search result suggestions that "spoil" or reveal plot elements of the media (shows, movies, books, etc.).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Business Model
 
-### `yarn test`
+#### Stakeholders
+* Users - people who want to be "protected" from spoiler search suggestions.
+* Businesses - companies who produce media that can be spoiled, they want their media to garner fame and interest
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+We don't want to charge users for using the extension. However, businesses' interest is to increase popularity for their media. So, we can charge companies to submit lists of key-words to block from search results. Companies don't want their shows to be spoiled, as that will cause people to lose interest.
 
-### `yarn build`
+### License
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We chose to use GPL because it is a good fit for expanding our ideas and allowing anyone to collaborate. As the project grows, there may be more opportunities to filter spoilers not just in search results, but on web-pages. Filtering out specific results may become difficult, and it would help if a lot of people could put their ideas on and develop solutions as a community. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Furthermore, we want to encourage open source development, and GPL will ensure that if someone modifies our code or uses it in another project, the derived work will still be open.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Languages
+Basic Google Chrome extensions use HTML, CSS, and JavaScript to add more functionality to Chrome.
 
-### `yarn eject`
+### Join the Discussion:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Most of our communication will take place on this [Discord](https://discord.gg/czmCt5yQ). Feel free to join to ask questions/discuss!
