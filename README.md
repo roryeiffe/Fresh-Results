@@ -33,8 +33,8 @@ We chose to use GPL because it is a good fit for expanding our ideas and allowin
 
 Furthermore, we want to encourage open source development, and GPL will ensure that if someone modifies our code or uses it in another project, the derived work will still be open.
 
-### Languages
-Basic Google Chrome extensions use HTML, CSS, and JavaScript to add more functionality to Chrome.
+### Technologies
+We are using JavaScript for our back-end and ReactJS framework for our front-end. 
 
 ### Join the Discussion:
 
