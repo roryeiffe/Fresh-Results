@@ -1,19 +1,13 @@
 ### Project Name
-
-Spoiler Block
+# Spoiler Block
 
 ### Team Members
 
-#### UI Team
-Rory Eiffe <br/>
-Covenant Faluyi <br/>
-#### Back-End Team
-Josh Wildfeuer <br/>
-Ben Unger <br/>
-#### Undecided/Full Stack
-Victoria Savage <br/>
-Abdul-Muiz Yusuff <br/>
-Serena Chen
+| UI Team         | Back-End Team    | Full Stack  |
+| -------------   |:-------------:   | -----:      |
+| Rory Eiffe      | Josh Wildfeuer   | Victoria Savage       |
+| Covenant Faluyi | Ben Unger        | Abdul-Muiz Yusuff       |
+|                 |                  | Serena Chen       |
 
 ### Description
 
