@@ -19,3 +19,6 @@ jobs:
 
       - name: "Install NPM Packages"
         run: npm install
+
+      - name: "Run Tests"
+        run: npm run tests
