@@ -33,9 +33,28 @@ We chose to use GPL because it is a good fit for expanding our ideas and allowin
 
 Furthermore, we want to encourage open source development, and GPL will ensure that if someone modifies our code or uses it in another project, the derived work will still be open.
 
-### Languages
-Basic Google Chrome extensions use HTML, CSS, and JavaScript to add more functionality to Chrome.
+### Technologies
+We are using JavaScript for our back-end and ReactJS framework for our front-end. 
 
 ### Join the Discussion:
 
 Most of our communication will take place on this [Discord](https://discord.gg/czmCt5yQ). Feel free to join to ask questions/discuss!
+
+### Start guide:
+
+First, clone the repository:
+```
+git clone https://github.com/roryeiffe/Spoiler-Block
+cd Spoiler-Block
+```
+Run the following npm commands:
+```
+npm install
+npm run build (run this every time you make changes)
+```
+- Next, go to chrome://extensions/. 
+- Enable developer mode on the top right of the webpage. 
+- Click Load unpacked on the top left of the webpage.
+- Navigate to the repostory directory, and load the build folder. 
+- Optional: pin the extension for quicker access by clicking on the extension icon on the top right of chrome and finding "Spoiler Block". 
+- Test it out by clicking on the Spoiler Block extension. A pop-up should appear.
