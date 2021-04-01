@@ -4,6 +4,7 @@
     font-size: 20px;
 }
 
+/* input field: */
 .input {
     color: #FF8845;
     border: none;
@@ -30,6 +31,7 @@ input.input[type=number] {
   -moz-appearance: textfield;
 }
 
+/* Arrow control */
 .arrows{
     display: flex;
     flex-direction: column;
