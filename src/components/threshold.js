@@ -18,7 +18,6 @@ export default function Threshold() {
   const onChange = (e) => {
     // convert string to integer:
     let newThreshold = parseInt(e.target.value,10);
-    console.log(newThreshold);
     if (newThreshold >= 0 && newThreshold <= 100) setThreshold(newThreshold)
   };
 

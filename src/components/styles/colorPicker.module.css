@@ -1,0 +1,30 @@
+.body {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+}
+
+.label {
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 20px;
+    font-size: 20px;
+
+}
+
+.color {
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    margin-right: 5px;
+    margin-left: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+
+}
+
+.color:hover {
+    cursor: pointer;
+    border: solid;
+    border-width: 1px;
+}
