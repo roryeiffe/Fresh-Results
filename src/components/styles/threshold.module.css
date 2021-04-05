@@ -1,0 +1,78 @@
+.body {
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+}
+
+.label{
+  line-height: 20px;
+}
+
+/* input field: */
+.input {
+    color: #FF8845;
+    border: none;
+    width: 50px;
+    font-size: 25px;
+    margin-left: 10px;
+    padding: 0;
+    outline: none;
+    line-height: 20px;
+
+}
+
+.percentSign {
+    color: #FF8845;
+    line-height: 15px;
+}
+
+/* Hide default Arrows: */
+input.input::-webkit-outer-spin-button,
+input.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input.input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Arrow control */
+.arrows{
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+.arrowUp {
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    
+    border-bottom: 10px solid #c4c4c4;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .arrowDown {
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    
+    border-top: 10px solid #c4c4c4;
+    cursor: pointer;
+  }
+
+  /* Don't allow the user to highlight these: */
+  .label, .percentSign, .arrows {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+  }
