@@ -1,25 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 import MoreInfo from './components/MoreInfo'
+import Threshold from './components/threshold';
+import ColorPicker from './components/colorPicker'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload. Just saved.
-        </p>
-        <MoreInfo infoType={'threshold'}/>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Threshold/>
+      <ColorPicker colors = {['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']}/>
     </div>
   );
 }
