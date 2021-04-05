@@ -16,14 +16,17 @@ export default function Threshold() {
   // When user changes input, make sure that the value
   // is between 0 and 100, and then update. 
   const onChange = (e) => {
-    let newThreshold = e.target.value
-    if (newThreshold >= 0 && newThreshold <= 100) setThreshold(e.target.value)
+    // convert string to integer:
+    let newThreshold = parseInt(e.target.value,10);
+    console.log(newThreshold);
+    if (newThreshold >= 0 && newThreshold <= 100) setThreshold(newThreshold)
   };
 
   // Increment the threshold by 5, ensure that
   // it does not surpass 100
   const increment = () => {
-    setThreshold(Math.min(100,threshold+5))
+    let newThreshold = threshold + 5;
+    setThreshold(Math.min(100,newThreshold))
   }
   // Decrement the threshold by 5, ensure that
   // it does not go below 0
@@ -33,7 +36,7 @@ export default function Threshold() {
 
   return (
     <div className={styles.body}>
-      <p className={styles.Label}>Spoiler Threshold</p>
+      <p className={styles.label}>Spoiler Threshold</p>
       <input
         type="number"
         max="100"
