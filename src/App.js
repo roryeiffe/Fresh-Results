@@ -1,12 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 
-import Threshold from "./components/threshold";
+import Threshold from './components/threshold';
+import ColorPicker from './components/colorPicker'
 
 function App() {
   return (
     <div className="App">
       <Threshold/>
+      <ColorPicker colors = {['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']}/>
     </div>
   );
 }
