@@ -1,7 +1,7 @@
-import question_mark from './question_mark.jpg';
-import './styles/MoreInfo.css';
+import questionMark from './questionMark.jpg';
+import styles from "./styles/moreInfo.module.css";
 
-// tooltip:  https://www.w3schools.com/howto/howto_css_tooltip.asp
+// tooltip:  https://www.w3schools.com/css/css_tooltip.asp
 
 const GetInfo = ({infoType}) => {
   switch(infoType) {
@@ -19,9 +19,11 @@ const GetInfo = ({infoType}) => {
 }
 
 const MoreInfo = ({infoType}) => (
-  <div className="tooltip">
-    <img src={question_mark} className="Question-mark" alt="More information" width="25" height="15" />
-    <span className="tooltiptext">{GetInfo({infoType})}</span>
+  <div className={styles.moreInfo}>
+    <div className={styles.tooltip}>
+      <img src={questionMark}  alt="More information" width="25" height="15" />
+      <span className={styles.tooltiptext}>{GetInfo({infoType})}</span>
+    </div>
   </div>
 );
 

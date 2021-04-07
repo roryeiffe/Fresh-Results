@@ -2,6 +2,8 @@
   text-align: center;
   width: 400px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -28,6 +30,24 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.feature-container {
+  float: left;
+  display: flex;
+  align-items: center;
+}
+
+.more-info {
+  float: left;
+  margin: 5px;
+  z-index: 2;
+}
+
+.feature-content {
+  float: left;
+  margin: 5px;
+  z-index: -1;
 }
 
 @keyframes App-logo-spin {
