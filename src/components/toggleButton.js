@@ -28,7 +28,7 @@ const ToggleButton = ({ onToggle }) => {
             onToggle(toggleState);
         }
 
-    }, [toggleState]);
+    }, [toggleState, onToggle]);
 
     return (<div className={`toggle-button noselect ${toggleState ? 'toggled' : ''}`} onClick={() => {
         setToggleState(!toggleState);
