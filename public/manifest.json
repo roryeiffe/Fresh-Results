@@ -10,5 +10,16 @@
     "default_title": "Open the popup",
     "default_icon": "logo.png"
   },
-  "permissions": []
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://en.wikipedia.org/wiki/Breaking_Bad"
+      ],
+      "js": ["jquery-3.6.0.min.js", "content.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
 }
