@@ -20,7 +20,7 @@ for (var i = 0; i < elements.length; i ++) {
             // Loop through spoiler words:
             for (var k = 0; k < spoiler_words.length; k ++) {
                 // For each word, replace occurences of the word with empty text:
-                replacedText = replacedText.replace(spoiler_words[k], '');
+                replacedText = replacedText.replace(spoiler_words[k], '<spoiler>');
             }
 
             // If we changed something, replace element on the page:

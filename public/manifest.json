@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://en.wikipedia.org/wiki/Breaking_Bad"
+        "<all_urls>"
       ],
       "js": ["jquery-3.6.0.min.js", "content.js"]
     }
