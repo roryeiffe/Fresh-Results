@@ -16,6 +16,7 @@
       "matches": [
         "<all_urls>"
       ],
+      "css":["styles.css"],
       "js": ["jquery-3.6.0.min.js", "content.js"]
     }
   ],

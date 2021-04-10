@@ -25,6 +25,7 @@ for (var i = 0; i < elements.length; i ++) {
 
             // If we changed something, replace element on the page:
             if (replacedText !== text) {
+                element.classList.add('spoiler');
                 element.replaceChild(document.createTextNode(replacedText),node)
             }
         }
