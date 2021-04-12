@@ -1009,20 +1009,6 @@ var jsonResult = JSON.stringify( [
 //parsting JSON to make into a string
 var result = JSON.parse(jsonResult);
 
-
-//// Will make ditionairy out of the JSON turned string made in result
-
-// var dictionary_words = { };
-
-// for (var i = 0, temp_word; i < result.length; i++) {
-//     temp_word = result[i];
-//     dictionary_words[temp_word.Word] = temp_word;
-// }
-
-
-// In reality, we would want to grab these from the excel sheet:
-var spoiler_words = ['death', 'dying', 'marries', 'dead']
-
 // Get all elements from the page:
 var elements = document.getElementsByTagName('*');
 
@@ -1032,22 +1018,24 @@ for (var i = 0; i < elements.length; i ++) {
     // Loop through all words:
     for (var j = 0; j < element.childNodes.length; j ++) {
         var node = element.childNodes[j];
-
         if (node.nodeType === 3) {
             // Grab the text value:
             var text = node.nodeValue;
-            console.log(text);
             // Will store the replaced text:
             var replacedText = text;
-            ////TODOL: Make so use dictionairy instead of result
             for (var k = 0; k < result.length; k++) {
                 //will replace whole and capitalized whole words that are in result
                 replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + '\\b'), '<spoiler>');
-                replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<Spoiler>');
+                // Account for capital words:
+                replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
+                // Account for plural words:
+                replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
+
             }
            
             // If we changed something, replace element on the page:
             if (replacedText !== text) {
+                console.log("HERE");
                 element.classList.add('spoiler');
                 element.replaceChild(document.createTextNode(replacedText),node)
             }
