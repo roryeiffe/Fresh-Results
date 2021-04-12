@@ -8,7 +8,7 @@ import styles from "./styles/threshold.module.css";
 // threshold is 50%, a website that has a 60% likelihood 
 // of containing spoilers will be blocked.
 // Usage: <Threshold/>
-export default function Threshold() {
+export default function Threshold(props) {
   // Initialize the threshold to be 0 (block websites)
   // with any chance of containing spoilers:
   const [threshold, setThreshold] = useState(0);
@@ -18,19 +18,28 @@ export default function Threshold() {
   const onChange = (e) => {
     // convert string to integer:
     let newThreshold = parseInt(e.target.value,10);
-    if (newThreshold >= 0 && newThreshold <= 100) setThreshold(newThreshold)
+    if (newThreshold >= 0 && newThreshold <= 100) {
+      setThreshold(newThreshold)
+      // Update parent component:
+      props.update(newThreshold);
+    } 
   };
 
   // Increment the threshold by 5, ensure that
   // it does not surpass 100
   const increment = () => {
-    let newThreshold = threshold + 5;
-    setThreshold(Math.min(100,newThreshold))
+    let newThreshold = Math.min(100,threshold + 5);
+    setThreshold(newThreshold)
+    // Update parent component:
+    props.update(newThreshold);
   }
   // Decrement the threshold by 5, ensure that
   // it does not go below 0
   const decrement = () => {
+    let newThreshold = Math.max(0,threshold-5)
     setThreshold(Math.max(0,threshold-5))
+    // Update parent component:
+    props.update(newThreshold);
   }
 
   return (

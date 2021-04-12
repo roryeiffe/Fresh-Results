@@ -16,6 +16,7 @@ export default function ColorPicker(props) {
   // to match the new color:
   const onChange = (newColor) => {
     setColor(newColor);
+    props.update(newColor);
   };
 
   return (
