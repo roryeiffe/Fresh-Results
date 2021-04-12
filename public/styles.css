@@ -1,9 +1,9 @@
-.spoiler {
+.spoiler * {
     color: red;
     background-color: red;
 }
 
-a.spoiler {
+/* 
+.spoiler a {
     color: red;
-    background-color: red;
-}
+} */

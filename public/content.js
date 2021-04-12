@@ -1030,7 +1030,6 @@ for (var i = 0; i < elements.length; i ++) {
                 replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
                 // Account for plural words:
                 replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
-
             }
            
             // If we changed something, replace element on the page:
