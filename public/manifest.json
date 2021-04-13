@@ -10,14 +10,14 @@
     "default_title": "Open the popup",
     "default_icon": "logo.png"
   },
-  "permissions": [],
+  "permissions": ["activeTab"],
   "content_scripts": [
     {
       "matches": [
         "<all_urls>"
       ],
       "css":["styles.css"],
-      "js": ["jquery-3.6.0.min.js", "content.js"]
+      "js": [ "content.js"]
     }
   ],
   "background": {

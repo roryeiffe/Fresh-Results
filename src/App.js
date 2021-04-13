@@ -7,11 +7,20 @@ import ToggleButton from './components/toggleButton';
 
 import styles from "./app.module.css";
 
+/*global chrome*/
+
 function App() {
   // The threshold and color values are automatically updated
   // by the components that control them:
   const [threshold, setThreshold] = useState(0);
   const [color, setColor] = useState('red');
+
+  // Send a message to the background script with the color
+  // and spoiler threshold values:
+  chrome.runtime.sendMessage({color: color, threshold:threshold}, function(response) {
+    // Log the background's response:
+    console.log(response.farewell);
+  });
 
   return (
     <div className="App">

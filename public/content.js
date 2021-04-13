@@ -1006,6 +1006,13 @@ var jsonResult = JSON.stringify( [
     }
   ]);
 
+// Send a message to the background that the content script is up and running:
+chrome.runtime.sendMessage({greeting: "from content"}, function(response) {
+  console.log(response.color);
+});
+
+
+
 //parsting JSON to make into a string
 var result = JSON.parse(jsonResult);
 
@@ -1034,9 +1041,8 @@ for (var i = 0; i < elements.length; i ++) {
            
             // If we changed something, replace element on the page:
             if (replacedText !== text) {
-                console.log("HERE");
-                element.classList.add('spoiler');
-                element.replaceChild(document.createTextNode(replacedText),node)
+                // element.classList.add('spoiler');
+                // element.replaceChild(document.createTextNode(replacedText),node)
             }
         }
     }
