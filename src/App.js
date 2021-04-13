@@ -15,13 +15,6 @@ function App() {
   const [threshold, setThreshold] = useState(0);
   const [color, setColor] = useState('red');
 
-  // Send a message to the background script with the color
-  // and spoiler threshold values:
-  // chrome.runtime.sendMessage({color: color, threshold:threshold}, function(response) {
-  // Log the background's response:
-  // console.log(response.farewell);
-  // });
-
   /**
    * useEffect
    * docs => https://reactjs.org/docs/hooks-effect.html
@@ -37,7 +30,23 @@ function App() {
   useEffect(() => {
 
     // When the color changes, send the message to the chrome tabs
-    console.log(`Color changed: ${color}`);
+    /**
+     * Google Chrome Message Passing
+     * docs => https://chrome-apps-doc2.appspot.com/extensions/messaging.html
+     */
+
+    // Send a message to the background script with the color
+    // and spoiler threshold values:
+    // chrome.runtime.sendMessage({color: color, threshold:threshold}, function(response) {
+    // Log the background's response:
+    // console.log(response.farewell);
+    // });
+
+    chrome.tabs.getSelected(null, (tab) => {
+      chrome.tabs.sendMessage(tab.id, { greeting: 'hello' }, (response) => {
+        console.log(response);
+      });
+    });
 
   }, [color]);
 
