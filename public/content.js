@@ -1013,40 +1013,62 @@ chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
 
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Recieved message from Spoiler Block !!!");
+  console.log(`Data Recieved from [SpoilerBlock]`, request);
+
+  if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
+    sendResponse({ success: true });
+  }
 });
 
-//parsting JSON to make into a string
-var result = JSON.parse(jsonResult);
+const blockWords = () => {
+  //parsting JSON to make into a string
+  var result = JSON.parse(jsonResult);
 
-// Get all elements from the page:
-var elements = document.getElementsByTagName('*');
+  // Get all elements from the page:
+  var elements = document.getElementsByTagName('*');
 
-// Loop through all elements:
-for (var i = 0; i < elements.length; i++) {
-  var element = elements[i];
-  // Loop through all words:
-  for (var j = 0; j < element.childNodes.length; j++) {
-    var node = element.childNodes[j];
-    if (node.nodeType === 3) {
-      // Grab the text value:
-      var text = node.nodeValue;
-      // Will store the replaced text:
-      var replacedText = text;
-      for (var k = 0; k < result.length; k++) {
-        //will replace whole and capitalized whole words that are in result
-        replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + '\\b'), '<spoiler>');
-        // Account for capital words:
-        replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
-        // Account for plural words:
-        replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
-      }
+  // Loop through all elements:
+  for (var i = 0; i < elements.length; i++) {
+    var element = elements[i];
+    // Loop through all words:
+    for (var j = 0; j < element.childNodes.length; j++) {
+      var node = element.childNodes[j];
+      if (node.nodeType === 3) {
+        // Grab the text value:
+        var text = node.nodeValue;
+        // Will store the replaced text:
+        var replacedText = text;
+        for (var k = 0; k < result.length; k++) {
+          //will replace whole and capitalized whole words that are in result
+          // replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + '\\b'), '<spoiler>');
+          // Account for capital words:
+          // replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
+          // Account for plural words:
+          // replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
 
-      // If we changed something, replace element on the page:
-      if (replacedText !== text) {
-        // element.classList.add('spoiler');
-        // element.replaceChild(document.createTextNode(replacedText),node)
+          replacedText = replaceText(replacedText, result, k);
+        }
+
+        // If we changed something, replace element on the page:
+        if (replacedText !== text) {
+          // element.classList.add('spoiler');
+          // element.replaceChild(document.createTextNode(replacedText),node)
+        }
       }
     }
   }
 }
+
+/** 
+ * Replace text and return the updated text
+*/
+const replaceText = (text, result, k) => {
+  text = text.replace(RegExp('\\b' + result[k].Word + '\\b'), '<spoiler>');
+  text = text.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
+  text = text.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
+
+  return text;
+}
+
+
+blockWords();

@@ -43,12 +43,34 @@ function App() {
     // });
 
     chrome.tabs.getSelected(null, (tab) => {
-      chrome.tabs.sendMessage(tab.id, { greeting: 'hello' }, (response) => {
+      chrome.tabs.sendMessage(tab.id, { sbCensorColor: color }, (response) => {
         console.log(response);
       });
     });
 
+    // Whenever the color changes, also update the color in the
+    // local storage
+    chrome.storage.sync.set({ "sb-censor-color": color }, () => {
+      console.log(`Color (${color}) successfully saved in local storage!`);
+    });
+
   }, [color]);
+
+  /**
+   * This configuration of useEffect is similiar to componentDidMount () 
+   * in class components.
+   * 
+   * When the app loads, we want to read the stored color from local storage, if
+   * it exists. Otherwise, use the default color (first color)
+   */
+  useEffect(() => {
+
+    // Try to load the color from local storage
+    chrome.storage.sync.get(`sb-censor-color`, (res) => {
+      setColor(res.key);
+    });
+
+  }, []);
 
   return (
     <div className="App">
