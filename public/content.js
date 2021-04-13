@@ -1051,8 +1051,8 @@ const blockWords = () => {
 
         // If we changed something, replace element on the page:
         if (replacedText !== text) {
-          // element.classList.add('spoiler');
-          // element.replaceChild(document.createTextNode(replacedText),node)
+          element.classList.add('spoiler');
+          element.replaceChild(document.createTextNode(replacedText),node)
         }
       }
     }
