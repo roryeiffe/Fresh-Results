@@ -13,7 +13,7 @@
 .tooltiptext {
   visibility: hidden;
   width: 200px;
-  background-color: #e8e8e8;
+  background-color: #ebebeb;
   color: black;
   text-align: center;
   border-radius: 6px;
@@ -37,7 +37,7 @@
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent #e8e8e8 transparent transparent;
+  border-color: transparent #ebebeb transparent transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
