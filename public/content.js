@@ -1011,13 +1011,33 @@ chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
   console.log(response.color);
 });
 
+var censorColor;
+const changeColor = () => {
+  let spoilers = document.querySelectorAll(".spoiler");
+
+  for (let i = 0; i < spoilers.length; i++) {
+  	spoilers[i].style.color = censorColor;
+    spoilers[i].style.backgroundColor = censorColor;
+  }
+
+  spoilers = document.querySelectorAll(".spoiler *");
+
+  for (let i = 0; i < spoilers.length; i++) {
+  	spoilers[i].style.color = censorColor;
+    spoilers[i].style.backgroundColor = censorColor;
+  }
+}
+
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(`Data Recieved from [SpoilerBlock]`, request);
 
   if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
     sendResponse({ success: true });
+    censorColor = request.sbCensorColor;
   }
+
+  changeColor();
 });
 
 const blockWords = () => {
@@ -1059,7 +1079,7 @@ const blockWords = () => {
   }
 }
 
-/** 
+/**
  * Replace text and return the updated text
 */
 const replaceText = (text, result, k) => {
