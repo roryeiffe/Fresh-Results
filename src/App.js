@@ -16,6 +16,24 @@ function App() {
   const [color, setColor] = useState('red');
 
   /**
+   * This configuration of useEffect is similiar to componentDidMount () 
+   * in class components.
+   * 
+   * When the app loads, we want to read the stored color from local storage, if
+   * it exists. Otherwise, use the default color (first color)
+   */
+  useEffect(() => {
+
+
+    // Try to load the color from local storage
+    chrome.storage.sync.get(`sb-censor-color`, (res) => {
+      console.log(`Loading color => `, res);
+      setColor(res["sb-censor-color"]);
+    });
+
+  }, []);
+
+  /**
    * useEffect
    * docs => https://reactjs.org/docs/hooks-effect.html
    * useEffect allows the execution of functions after a state change.
@@ -55,22 +73,6 @@ function App() {
     });
 
   }, [color]);
-
-  /**
-   * This configuration of useEffect is similiar to componentDidMount () 
-   * in class components.
-   * 
-   * When the app loads, we want to read the stored color from local storage, if
-   * it exists. Otherwise, use the default color (first color)
-   */
-  useEffect(() => {
-
-    // Try to load the color from local storage
-    chrome.storage.sync.get(`sb-censor-color`, (res) => {
-      setColor(res.key);
-    });
-
-  }, []);
 
   return (
     <div className="App">
