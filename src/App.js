@@ -37,11 +37,11 @@ function App() {
    * useEffect
    * docs => https://reactjs.org/docs/hooks-effect.html
    * useEffect allows the execution of functions after a state change.
-   * 
+   *
    * In this case, the anonymous function defined as the first parameter
    * of useEffect will be executed anytime the [color] state variable
    * changes.
-   * 
+   *
    * The 2nd argument is a dependency list, which states all variables that
    * will be state changes will be listened for.
    */
@@ -55,10 +55,10 @@ function App() {
 
     // Send a message to the background script with the color
     // and spoiler threshold values:
-    // chrome.runtime.sendMessage({color: color, threshold:threshold}, function(response) {
-    // Log the background's response:
-    // console.log(response.farewell);
-    // });
+    chrome.runtime.sendMessage({ color: color, threshold: threshold }, function (response) {
+      // Log the background's response:
+      console.log(response.farewell);
+    });
 
     chrome.tabs.getSelected(null, (tab) => {
       chrome.tabs.sendMessage(tab.id, { sbCensorColor: color }, (response) => {
