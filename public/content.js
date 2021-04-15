@@ -1009,6 +1009,10 @@ var jsonResult = JSON.stringify([
 // Send a message to the background that the content script is up and running:
 chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
   console.log(response.color);
+  if (Object.prototype.hasOwnProperty.call(response, 'color')) {
+    censorColor = response.color;
+    changeColor();
+  }
 });
 
 var censorColor;
@@ -1016,14 +1020,14 @@ const changeColor = () => {
   let spoilers = document.querySelectorAll(".spoiler");
 
   for (let i = 0; i < spoilers.length; i++) {
-  	spoilers[i].style.color = censorColor;
+    spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
   }
 
   spoilers = document.querySelectorAll(".spoiler *");
 
   for (let i = 0; i < spoilers.length; i++) {
-  	spoilers[i].style.color = censorColor;
+    spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
   }
 }
@@ -1035,6 +1039,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
     sendResponse({ success: true });
     censorColor = request.sbCensorColor;
+  }
+  else {
+    sendResponse({ 'bruh': true });
+    censorColor = request.color;
   }
 
   changeColor();
@@ -1072,7 +1080,7 @@ const blockWords = () => {
         // If we changed something, replace element on the page:
         if (replacedText !== text) {
           element.classList.add('spoiler');
-          element.replaceChild(document.createTextNode(replacedText),node)
+          element.replaceChild(document.createTextNode(replacedText), node)
         }
       }
     }

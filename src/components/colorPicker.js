@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles/colorPicker.module.css";
 
 // This function displays the different colors that
@@ -11,6 +11,13 @@ import styles from "./styles/colorPicker.module.css";
 export default function ColorPicker(props) {
   // Initialize the color to be the first in the list:
   const [color, setColor] = useState(props.colors[0]);
+
+  useEffect(() => {
+    if (props.initial != undefined && props.colors.includes(props.initial)) {
+      setColor(props.initial);
+      props.update(props.initial);
+    }
+  }, []);
 
   // When the user clicks a new color, set the state 
   // to match the new color:
@@ -30,10 +37,10 @@ export default function ColorPicker(props) {
           <div
             onClick={() => onChange(color_)}
             className={styles.color}
-            style={{ background: color_, border: 'solid', borderWidth: '2px'}}
+            style={{ background: color_, border: 'solid', borderWidth: '2px' }}
           ></div>
         ) : (
-        // Otherwise, display the color as normal:
+          // Otherwise, display the color as normal:
           <div
             onClick={() => onChange(color_)}
             className={styles.color}

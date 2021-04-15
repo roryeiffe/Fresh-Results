@@ -13,7 +13,7 @@ function App() {
   // The threshold and color values are automatically updated
   // by the components that control them:
   const [threshold, setThreshold] = useState(0);
-  const [color, setColor] = useState('red');
+  const [color, setColor] = useState(null);
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -24,12 +24,8 @@ function App() {
    */
   useEffect(() => {
 
-
-    // Try to load the color from local storage
-    chrome.storage.sync.get(`sb-censor-color`, (res) => {
-      console.log(`Loading color => `, res);
-      setColor(res["sb-censor-color"]);
-    });
+    // TODO on load, request the color from the
+    // background script
 
   }, []);
 
@@ -47,12 +43,6 @@ function App() {
    */
   useEffect(() => {
 
-    // When the color changes, send the message to the chrome tabs
-    /**
-     * Google Chrome Message Passing
-     * docs => https://chrome-apps-doc2.appspot.com/extensions/messaging.html
-     */
-
     // Send a message to the background script with the color
     // and spoiler threshold values:
     chrome.runtime.sendMessage({ color: color, threshold: threshold }, function (response) {
@@ -60,19 +50,7 @@ function App() {
       console.log(response.farewell);
     });
 
-    chrome.tabs.getSelected(null, (tab) => {
-      chrome.tabs.sendMessage(tab.id, { sbCensorColor: color }, (response) => {
-        console.log(response);
-      });
-    });
-
-    // Whenever the color changes, also update the color in the
-    // local storage
-    chrome.storage.sync.set({ "sb-censor-color": color }, () => {
-      console.log(`Color (${color}) successfully saved in local storage!`);
-    });
-
-  }, [color]);
+  }, [color, threshold]);
 
   return (
     <div className="App">
@@ -96,7 +74,7 @@ function App() {
 
       <div>
         <MoreInfoWrapper infoType={'threshold'}><Threshold update={setThreshold} /></MoreInfoWrapper>
-        <MoreInfoWrapper infoType={'threshold'}><ColorPicker colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
+        <MoreInfoWrapper infoType={'threshold'}><ColorPicker initial={color} colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
       </div>
     </div>
   );
