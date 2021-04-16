@@ -16,9 +16,12 @@
       "matches": [
         "<all_urls>"
       ],
-      "css":["styles.css"],
+      "css":["styles.css", "content.css"],
       "js": [ "content.js"]
     }
+  ],
+  "web_accessible_resources": [
+    "content.html"
   ],
   "background": {
     "scripts": ["background.js"]
