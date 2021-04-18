@@ -48,7 +48,7 @@ npm run build (run this every time you make changes)
 ```
 - Next, go to chrome://extensions/. 
 - Enable developer mode on the top right of the webpage. 
-- Click Load unpacked on the top left of the webpage.
-- Navigate to the repostory directory, and load the build folder. 
+- Click "Load Unpacked" on the top left of the webpage.
+- Navigate to the repository directory, and load the build folder. 
 - Optional: pin the extension for quicker access by clicking on the extension icon on the top right of chrome and finding "Spoiler Block". 
 - Test it out by clicking on the Spoiler Block extension. A pop-up should appear.
