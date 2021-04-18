@@ -11,7 +11,7 @@ function App() {
 
   return ( 
     <div>
-      {page == 'homePage' ?  <div className="App">
+      {page === 'homePage' ?  <div className="App">
         <Threshold/>
         <ColorPicker colors = {['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']}/>
         <u onClick = {()=> setPage('keywordPage')} style={{cursor: 'pointer'}} className='keyword-click '>Add/Edit Keywords!</u>
