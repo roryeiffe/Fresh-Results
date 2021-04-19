@@ -8,17 +8,16 @@ String.prototype.capitalize = function () {
 //   javascript being dumb and how it needs access to the json
 function replace_function(result) {
 
-
   // console.log(result);
 
   //// Will make ditionairy out of the JSON turned string made in result
 
-  // var dictionary_words = { };
+  var dictionary_words = {};
 
-  // for (var i = 0, temp_word; i < result.length; i++) {
-  //     temp_word = result[i];
-  //     dictionary_words[temp_word.Word] = temp_word;
-  // }
+  for (var i = 0, temp_word; i < result.length; i++) {
+    temp_word = result[i];
+    dictionary_words[temp_word.Word] = temp_word;
+  }
 
   // Get all elements from the page:
   var elements = document.getElementsByTagName('*');
@@ -34,14 +33,24 @@ function replace_function(result) {
         var text = node.nodeValue;
         // Will store the replaced text:
         var replacedText = text;
-        //TODO: replace this loop with a dictionairy look up implementation
-        for (var k = 0; k < result.length; k++) {
-          //will replace whole and capitalized whole words that are in result
-          replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + '\\b'), '<spoiler>');
-          // Account for capital words:
-          replacedText = replacedText.replace(RegExp('\\b' + result[k].Word.capitalize() + '\\b'), '<spoiler>');
-          // Account for plural words:
-          replacedText = replacedText.replace(RegExp('\\b' + result[k].Word + 's' + '\\b'), '<spoiler>');
+
+        //need to break up long strings (i.e. replacedText) by spaces to check for individual words
+        var splitText = text.split(" ");
+        //loop going through each word
+        for (var k = 0; k < splitText.length; k += 1) {
+          //keys are in lowercase so this fixes the issue of capitalized words
+          keyWord = splitText[k].toLowerCase();
+          //if individual word is a key
+          if (keyWord in dictionary_words) {
+            //will replace whole and capitalized whole words that are in result
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + '\\b'), '<spoiler>');
+            // Account for capital words:
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
+            // ACCOUNT FOR UPPERCASE WORDS:
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
+            // Account for plural words:
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + 's' + '\\b'), '<spoiler>');
+          }    
         }
 
         // If we changed something, replace element on the page:
