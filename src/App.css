@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
   width: 400px;
   padding: 10px;
   display: flex;
@@ -57,4 +57,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.keyword-click{
+  margin-top: 20px;
+  margin-bottom: auto;
+  line-height: 20px;
+  font-size: 20px;
 }
