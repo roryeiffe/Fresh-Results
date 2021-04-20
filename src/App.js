@@ -10,7 +10,10 @@ import ToggleButton from './components/toggleButton';
 function App() {
 
   const [page, setPage] = useState('homePage');
+  // make the default custom words, should grab these from local storage in the future:s
+  const [customWords, setCustomWords] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ], 'Star Wars': ['Luke Skywalker', 'Anakin', 'Darth Vader']})
 
+  console.log(customWords);
   return ( 
     <div>
       {page === 'homePage' ? <div className="App">
