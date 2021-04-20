@@ -1,7 +1,7 @@
 import './styles/KeywordPage.css';
 import React, { useState } from "react";
 
-function KeywordPage({cancelClick}) {
+function KeywordPage({cancelClick, update}) {
 
 
   const [currentWordGroup, setCurrentWordGroup] = useState('default')
@@ -15,6 +15,8 @@ function KeywordPage({cancelClick}) {
     const wordGroupsCopy = wordGroups
     wordGroupsCopy[currentWordGroup] = keywords
     setWordGroups(wordGroupsCopy)
+    // Update state in App.js:
+    update(wordGroups);
   }
 
   const submitWordGroupToBeAdded = () => {
