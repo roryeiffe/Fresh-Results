@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
-import MoreInfo, { MoreInfoWrapper } from './components/moreInfo'
+import  { MoreInfoWrapper } from './components/moreInfo'
 import Threshold from './components/threshold';
 import ColorPicker from './components/colorPicker';
 import ToggleButton from './components/toggleButton';
 
-import styles from "./app.module.css";
+// import styles from "./app.module.css";
 
 /*global chrome*/
 
