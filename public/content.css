@@ -5,9 +5,11 @@
     right: 10px;
     
     /* TODO insert theme colors here */
-    background-color: white;
+    background-color: #EBEBEB;
     border-radius: 5px;
     padding: 10px 15px;
-    color: black;
-    border: 2px solid red;
+    color: #0B1014;
+    border-width: : 2px; 
+    border-style: solid ;
+    border-color: #E84855;
 }
