@@ -60,6 +60,7 @@ function App() {
         {/* TODO put logo here */}
         <div style={{ width: '30px', height: '30px', backgroundColor: `rgba(0, 0, 0, 0.3)`, marginRight: '10px' }} />
         <div style={{ fontWeight: 'bold', transform: `translateY(-2px)` }}>SpoilerBlock</div>
+
       </div>
 
       {/* Toggle Disable / Enable */}
@@ -76,8 +77,15 @@ function App() {
         <MoreInfoWrapper infoType={'threshold'}><Threshold update={setThreshold} /></MoreInfoWrapper>
         <MoreInfoWrapper infoType={'threshold'}><ColorPicker initial={color} colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
       </div>
+      <div className="feature-container">
+        <div className="more-info" id="color-more-info"><MoreInfo infoType={'keywords'}/></div>
+        <div className={styles.featureContent}> <u onClick = {()=> setPage('keywordPage')} style={{cursor: 'pointer'}} className='keyword-click '>Add/Edit Keywords!</u> </div>
+      </div>
+    </div> : 
+      <KeywordPage cancelClick = {()=> setPage('homePage')}/>
+      }
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
