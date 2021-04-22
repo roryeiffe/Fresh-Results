@@ -18,6 +18,10 @@
       ],
       "css":["styles.css"],
       "js": ["jquery-3.6.0.min.js", "content.js"]
+    },
+    {
+      "matches": ["*://*.google.com/*"],
+      "js": ["remove.js"]
     }
   ],
   "background": {
