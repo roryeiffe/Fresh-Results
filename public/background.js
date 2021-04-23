@@ -1,7 +1,7 @@
 let color = "blue";
 let words = {'default': ['kills', 'steal', 'dies', 'resurrected' ]};
 // define default values:
-const DEFAULT_COLOR = 'red';
+const DEFAULT_COLOR = '#FF4747';
 const DEFAULT_WORDS = {'default': ['kills', 'steal', 'dies', 'resurrected' ]};
 
 // update the color with the new color and store it in chrome storage:
@@ -35,6 +35,9 @@ const startup = () => {
             words = res["custom-words"];
         }
     });
+    // if data is null, update with the default:
+    if (!color) updateColor(DEFAULT_COLOR);
+    if (!words) updateWords(DEFAULT_WORDS);
 
 
 }

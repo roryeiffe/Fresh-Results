@@ -17,8 +17,8 @@ function App() {
   // by the components that control them:
   const [threshold, setThreshold] = useState(0);
   const [color, setColor] = useState(null);
-  const [page, setPage] = useState('homePage');
   const [customWords, setCustomWords] = useState(null);
+  const [page, setPage] = useState('homePage');
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -51,6 +51,8 @@ function App() {
           setCustomWords(res["custom-words"]);
       }
   });
+    // if custom words are not defined, set them here:
+    if (!customWords) setCustomWords({"default":[]});
     // Send a message to the background script with the color
     // and spoiler threshold values only if data is not null:
     if (color !== null && customWords !== null) {
@@ -62,6 +64,7 @@ function App() {
 
   // when custom words are updated, update storage
   const update = (newWords) => {
+    setCustomWords(newWords);
     chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
       // Log the background's response:
       console.log(response.farewell);
@@ -72,6 +75,8 @@ function App() {
     <div>  {page === 'homePage' ? 
     <div className="App">
       {/* Header */}
+      {color}
+      {JSON.stringify(customWords)}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
         {/* TODO put logo here */}
         <div style={{ width: '30px', height: '30px', backgroundColor: `rgba(0, 0, 0, 0.3)`, marginRight: '10px' }} />

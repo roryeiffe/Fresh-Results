@@ -81,6 +81,10 @@ function replace_function(result, customWords) {
     }
   }
 
+  // for (const w in dictionary_words) {
+  //   console.log(dictionary_words[w].Word);
+  // }
+
   // Get all elements from the page:
   var elements = document.getElementsByTagName('*');
 
