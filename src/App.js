@@ -19,18 +19,7 @@ function App() {
   const [color, setColor] = useState(null);
   const [page, setPage] = useState('homePage');
   // make the default custom words, should grab these from local storage in the future:s
-  const [customWords, setCustomWords] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ], 'Star Wars': ['Luke Skywalker', 'Anakin', 'Darth Vader']})
-
-  useEffect(() => {
-
-    // Send a message to the background script with the color
-    // and spoiler threshold values:
-    chrome.runtime.sendMessage({ words: customWords }, function (response) {
-      // Log the background's response:
-      console.log(response.farewell);
-    });
-
-  }, [customWords]);
+  const [customWords, setCustomWords] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ], 'Star Wars': ['Luke Skywalker', 'Anakin', 'Darth Vader']});
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -57,12 +46,12 @@ function App() {
     // Send a message to the background script with the color
     // and spoiler threshold values only if color is not null:
     if (color !== null) {
-    chrome.runtime.sendMessage({ color: color, threshold: threshold }, function (response) {
+    chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
       // Log the background's response:
       console.log(response.farewell);
     });}
 
-  }, [color, threshold]);
+  }, [color, threshold, customWords]);
 
   return (
     <div>  {page === 'homePage' ? 
