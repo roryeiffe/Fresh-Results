@@ -73,17 +73,19 @@ function replace_function(result, customWords) {
     // loop through the sub list:
     for (let i = 0; i < wordList.length; i ++) {
       // add each word to the dictionary:
-      temp_word = {
-        Word: wordList[i].toLowerCase(),
-        weight: 1
+      if (wordList[i].toLowerCase() !== "") {
+        temp_word = {
+          Word: wordList[i].toLowerCase(),
+          Strength: 1
+        }
+        dictionary_words[temp_word.Word] = temp_word;
       }
-      dictionary_words[temp_word.Word] = temp_word;
     }
   }
 
-  // for (const w in dictionary_words) {
-  //   console.log(dictionary_words[w].Word);
-  // }
+  for (const w in dictionary_words) {
+    console.log(dictionary_words[w].Word);
+  }
 
   // Get all elements from the page:
   var elements = document.getElementsByTagName('*');

@@ -53,6 +53,7 @@ function App() {
   });
     // if custom words are not defined, set them here:
     if (!customWords) setCustomWords({"default":[]});
+    if (!color) setColor("#FF4747");
     // Send a message to the background script with the color
     // and spoiler threshold values only if data is not null:
     if (color !== null && customWords !== null) {
