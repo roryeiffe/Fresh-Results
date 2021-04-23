@@ -1,7 +1,6 @@
 .App {
   text-align: left;
   width: 400px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -33,9 +32,9 @@
 }
 
 .feature-container {
-  float: left;
-  display: flex;
-  align-items: center;
+  /* float: left; */
+  /* display: flex; */
+  /* align-items: center; */
 }
 
 .more-info {

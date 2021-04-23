@@ -22,6 +22,7 @@
   position: absolute;
   top: -30%;
   left: 110%;
+  z-index: 2;
 
   /* Tooltip fade in */
   opacity: 0;
@@ -44,4 +45,17 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+.moreInfoWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.moreInfoHolder {
+  width: 40px;
+  height: 40px;
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  margin-right: 10px;
+  text-align: center;
 }
