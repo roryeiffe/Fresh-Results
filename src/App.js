@@ -78,7 +78,7 @@ function App() {
 
       <div>
         <MoreInfoWrapper infoType={'threshold'}><Threshold update={setThreshold} /></MoreInfoWrapper>
-        <MoreInfoWrapper infoType={'threshold'}><ColorPicker color={color} colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
+        <MoreInfoWrapper infoType={'threshold'}><ColorPicker colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
       </div>
       <div className="feature-container">
         <div className="more-info" id="color-more-info"><MoreInfo infoType={'keywords'}/></div>
