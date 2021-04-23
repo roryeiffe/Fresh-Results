@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://en.wikipedia.org/wiki/Romeo_and_Juliet"
+        "<all_urls>"
       ],
       "css":["styles.css"],
       "js": ["content.js"]
