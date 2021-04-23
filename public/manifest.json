@@ -17,7 +17,11 @@
         "<all_urls>"
       ],
       "css":["styles.css"],
-      "js": [ "content.js"]
+      "js": ["jquery-3.6.0.min.js", "content.js"]
+    },
+    {
+      "matches": ["*://*.google.com/*"],
+      "js": ["remove.js"]
     }
   ],
   "background": {
