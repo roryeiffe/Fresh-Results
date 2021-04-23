@@ -76,8 +76,6 @@ function App() {
     <div>  {page === 'homePage' ? 
     <div className="App">
       {/* Header */}
-      {color}
-      {JSON.stringify(customWords)}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
         {/* TODO put logo here */}
         <div style={{ width: '30px', height: '30px', backgroundColor: `rgba(0, 0, 0, 0.3)`, marginRight: '10px' }} />
