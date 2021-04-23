@@ -76,7 +76,7 @@ function replace_function(result, customWords) {
       if (wordList[i].toLowerCase() !== "") {
         temp_word = {
           Word: wordList[i].toLowerCase(),
-          Strength: 1
+          Strength: 10 //custom words will get max strength
         }
         dictionary_words[temp_word.Word] = temp_word;
       }
@@ -116,9 +116,17 @@ function replace_function(result, customWords) {
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
             // ACCOUNT FOR UPPERCASE WORDS:
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
-            // Account for plural words:
-            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + 's' + '\\b'), '<spoiler>');
+            
           }  
+          //fix for checking plural words (just checking if all but last letter is key)
+          if(keyWord.slice(0,-1) in dictionary_words){
+            // Account for plural words:
+            console.log(keyWord);
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word + 's' + '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.capitalize() +'s'+ '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.toUpperCase() +'S' + '\\b'), '<SPOILER>');
+
+          }
         }
 
         // If we changed something, replace element on the page:
