@@ -19,7 +19,7 @@ const updateWords = (new_words) => {
 const startup = () => {
 
     // when the background script starts up, load the
-    // color from the local storage
+    // data from the local storage
     color = DEFAULT_COLOR;
     words = DEFAULT_WORDS;
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
@@ -52,14 +52,12 @@ chrome.runtime.onMessage.addListener(
         }
         // If this is a request from the extension:
         else {
-            console.log(request);
             // Take the data from the request:
             if (request.color == null || request.words == null) {
                 console.error("Color or custom words are null...");
                 sendResponse({ farewell: `Background did not receive the data` });
             }
             else {
-                console.log(request);
                 // update values for color and words:
                 updateColor(request.color);
                 updateWords(request.words);

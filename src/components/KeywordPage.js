@@ -1,30 +1,15 @@
 import './styles/KeywordPage.css';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-/*global chrome*/
 
-function KeywordPage({cancelClick, update}) {
+function KeywordPage({cancelClick, update, initialWords}) {
 
 
   const [currentWordGroup, setCurrentWordGroup] = useState('default')
   const [currentMode, setCurrentMode] = useState('edit')
-  const [wordGroups, setWordGroups] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ]})
+  // Initialize with words from App.js (which were taken from local storage)
+  const [wordGroups, setWordGroups] = useState(initialWords)
   const [toBeAddedWordGroup, setToBeAddedWordGroup] = useState('')
-
-  // get words from local storage:
-  useEffect(() => {
-    // Grab the words from the local state:
-    chrome.storage.sync.get(`custom-words`, (res) => {
-         {
-            console.log(res["custom-words"]);
-            // set the word state
-            setWordGroups(res["custom-words"]);
-            // pass this word group back up to App.js:
-            update(res["custom-words"]);
-        }
-    });
-  }, [wordGroups,update]);
-
   
   const textAreaChange = (event) => {
     let keywords = event.target.value
@@ -32,10 +17,8 @@ function KeywordPage({cancelClick, update}) {
     const wordGroupsCopy = wordGroups
     wordGroupsCopy[currentWordGroup] = keywords
     setWordGroups(wordGroupsCopy)
-    // Update state in App.js:
+    // Update state in App.js (which also updates local storage)
     update(wordGroups);
-    // Update local storage:
-    chrome.storage.sync.set({ "custom-words": wordGroups });
   }
 
   const submitWordGroupToBeAdded = () => {

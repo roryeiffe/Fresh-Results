@@ -6,14 +6,17 @@ String.prototype.capitalize = function () {
 // Send a message to the background that the content script is up and running:
 chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
   if (Object.prototype.hasOwnProperty.call(response, 'color')) {
+    // update values based on response:
     censorColor = response.color;
     customWords = response.words;
+    // change the color of the webpage:
     changeColor();
   }
 });
 
 var censorColor;
 var customWords;
+// Change the color of the spoiled texts:
 const changeColor = () => {
   // Get all elements that were labelled as a spoiler:
   let spoilers = document.querySelectorAll(".spoiler");
@@ -33,17 +36,19 @@ const changeColor = () => {
 
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(`Data Recieved from [SpoilerBlock]`, request);
+  // console.log(`Data Recieved from [SpoilerBlock]`, request);
 
   if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
     sendResponse({ success: true });
     censorColor = request.sbCensorColor;
   }
   else {
+    // Update local variables based on response:
     sendResponse({ 'bruh': true });
     censorColor = request.color;
     customWords = request.words;
   }
+  // Change the color of the webpage:
   changeColor();
 });
 
@@ -53,11 +58,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //   javascript being dumb and how it needs access to the json
 function replace_function(result, customWords) {
 
-  console.log(customWords);
-
-  // console.log(result);
-
-  //// Will make ditionairy out of the JSON turned string made in result
+  //// Will make dictionairy out of the JSON turned string made in result
 
   var dictionary_words = {};
 
