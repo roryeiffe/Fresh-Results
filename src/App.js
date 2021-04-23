@@ -56,8 +56,6 @@ function App() {
   return (
     <div>  {page === 'homePage' ? 
     <div className="App">
-      {color}
-
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
         {/* TODO put logo here */}

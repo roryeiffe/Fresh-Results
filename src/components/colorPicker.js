@@ -23,7 +23,7 @@ export default function ColorPicker(props) {
             props.update(res["sb-censor-color"]);
         }
     });
-  }, [props]);
+  }, [color,props]);
 
   // When the user clicks a new color, set the state
   // to match the new color and update App.js
