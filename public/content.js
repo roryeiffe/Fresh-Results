@@ -1,3 +1,6 @@
+var censorColor;
+var censorThreshold;
+
 //Capitalizing word
 String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -1009,13 +1012,16 @@ var jsonResult = JSON.stringify([
 // Send a message to the background that the content script is up and running:
 chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
   console.log(response.color);
+  console.log(response.threshold);
   if (Object.prototype.hasOwnProperty.call(response, 'color')) {
     censorColor = response.color;
     changeColor();
   }
+  if (Object.prototype.hasOwnProperty.call(response, 'threshold')) {
+    censorThreshold = response.threshold;
+  }
 });
 
-var censorColor;
 const changeColor = () => {
   let spoilers = document.querySelectorAll(".spoiler");
 
@@ -1043,6 +1049,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   else {
     sendResponse({ 'bruh': true });
     censorColor = request.color;
+    censorThreshold = request.threshold;
   }
 
   changeColor();
