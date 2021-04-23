@@ -18,8 +18,7 @@ function App() {
   const [threshold, setThreshold] = useState(0);
   const [color, setColor] = useState(null);
   const [page, setPage] = useState('homePage');
-  // make the default custom words, should grab these from local storage in the future:s
-  const [customWords, setCustomWords] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ], 'Star Wars': ['Luke Skywalker', 'Anakin', 'Darth Vader']});
+  const [customWords, setCustomWords] = useState(null);
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -42,10 +41,17 @@ function App() {
    * will be state changes will be listened for.
    */
   useEffect(() => {
+    // update custom words from local storage, if they are null:
+    chrome.storage.sync.get(`custom-words`, (res) => {
+      if (Object.prototype.hasOwnProperty.call(res, "custom-words") && customWords == null) {
+          // set the word state:
+          setCustomWords(res["custom-words"]);
+      }
+  });
 
     // Send a message to the background script with the color
-    // and spoiler threshold values only if color is not null:
-    if (color !== null) {
+    // and spoiler threshold values only if data is not null:
+    if (color !== null && customWords !== null) {
     chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
       // Log the background's response:
       console.log(response.farewell);
@@ -53,9 +59,22 @@ function App() {
 
   }, [color, threshold, customWords]);
 
+  // Test function, manually change the word state to see changes in background
+  const foo = () => {
+    let bruh = {'default': ['bruh' ]};
+    setCustomWords(bruh);
+  }
+  const foo2 = () => {
+    let bruh = {'default': ['bruh2' ]};
+    setCustomWords(bruh);
+  }
+
+
   return (
     <div>  {page === 'homePage' ? 
     <div className="App">
+      <button onClick = {foo}>Click me</button>
+      <button onClick = {foo2}>Click me 2</button>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
         {/* TODO put logo here */}
@@ -83,7 +102,8 @@ function App() {
         <div className={styles.featureContent}> <u onClick = {()=> setPage('keywordPage')} style={{cursor: 'pointer'}} className='keyword-click '>Add/Edit Keywords!</u> </div>
       </div>
     </div> : 
-      <KeywordPage update = {setCustomWords} cancelClick = {()=> setPage('homePage')}/>
+      // <KeywordPage update = {setCustomWords} cancelClick = {()=> setPage('homePage')}/>
+      <div>hello</div>
       }
     </div>
   )

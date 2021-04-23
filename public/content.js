@@ -15,15 +15,16 @@ chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
 var censorColor;
 var customWords;
 const changeColor = () => {
+  // Get all elements that were labelled as a spoiler:
   let spoilers = document.querySelectorAll(".spoiler");
-
+  // loop through all spoiler elements and color them in:
   for (let i = 0; i < spoilers.length; i++) {
     spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
   }
-
+  // Get all elements that were labelled as a spoiler:
   spoilers = document.querySelectorAll(".spoiler *");
-
+  // loop through all spoiler elements and color them in:
   for (let i = 0; i < spoilers.length; i++) {
     spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
@@ -41,8 +42,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   else {
     sendResponse({ 'bruh': true });
     censorColor = request.color;
+    customWords = request.words;
   }
-
   changeColor();
 });
 
@@ -51,6 +52,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //function has been made to go over all of the words and replace them due to
 //   javascript being dumb and how it needs access to the json
 function replace_function(result, customWords) {
+
+  console.log(customWords);
 
   // console.log(result);
 
@@ -70,11 +73,10 @@ function replace_function(result, customWords) {
     for (let i = 0; i < wordList.length; i ++) {
       // add each word to the dictionary:
       temp_word = {
-        Word: wordList[i],
+        Word: wordList[i].toLowerCase(),
         weight: 1
       }
       dictionary_words[temp_word.Word] = temp_word;
-      console.log(dictionary_words[temp_word.Word]);
     }
   }
 
