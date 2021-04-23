@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
+
 import  { MoreInfoWrapper } from './components/moreInfo'
+import MoreInfo from './components/moreInfo';
 import Threshold from './components/threshold';
 import ColorPicker from './components/colorPicker';
 import ToggleButton from './components/toggleButton';
+import KeywordPage from './components/KeywordPage';
+
+import styles from "./app.module.css";
 
 // import styles from "./app.module.css";
 
@@ -14,6 +19,7 @@ function App() {
   // by the components that control them:
   const [threshold, setThreshold] = useState(0);
   const [color, setColor] = useState(null);
+  const [page, setPage] = useState('homePage');
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -22,12 +28,6 @@ function App() {
    * When the app loads, we want to read the stored color from local storage, if
    * it exists. Otherwise, use the default color (first color)
    */
-  useEffect(() => {
-
-    // TODO on load, request the color from the
-    // background script
-
-  }, []);
 
   /**
    * useEffect
@@ -44,16 +44,19 @@ function App() {
   useEffect(() => {
 
     // Send a message to the background script with the color
-    // and spoiler threshold values:
+    // and spoiler threshold values only if color is not null:
+    if (color !== null) {
     chrome.runtime.sendMessage({ color: color, threshold: threshold }, function (response) {
       // Log the background's response:
       console.log(response.farewell);
-    });
+    });}
 
   }, [color, threshold]);
 
   return (
+    <div>  {page === 'homePage' ? 
     <div className="App">
+      {color}
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
@@ -75,7 +78,7 @@ function App() {
 
       <div>
         <MoreInfoWrapper infoType={'threshold'}><Threshold update={setThreshold} /></MoreInfoWrapper>
-        <MoreInfoWrapper infoType={'threshold'}><ColorPicker initial={color} colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
+        <MoreInfoWrapper infoType={'threshold'}><ColorPicker color={color} colors={['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']} update={setColor} /></MoreInfoWrapper>
       </div>
       <div className="feature-container">
         <div className="more-info" id="color-more-info"><MoreInfo infoType={'keywords'}/></div>

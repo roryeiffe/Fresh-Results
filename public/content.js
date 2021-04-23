@@ -100,12 +100,13 @@ function replace_function(result) {
         // If we changed something, replace element on the page:
         if (replacedText !== text) {
           // console.log("HERE");
-          element.classList.add('spoiler'); //make everyrthing red
+          element.classList.add('spoiler'); 
           element.replaceChild(document.createTextNode(replacedText), node)
         }
       }
     }
   }
+  changeColor();
 
 
 }

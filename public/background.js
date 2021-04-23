@@ -34,9 +34,11 @@ chrome.runtime.onMessage.addListener(
         }
         // If this is a request from the extension:
         else {
+            console.log(request);
             // Take the data from the request:
             if (request.color == null) {
                 console.error("Color is null...");
+                sendResponse({ farewell: `Background did not receive the data` });
             }
             else {
                 updateColor(request.color);

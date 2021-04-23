@@ -11,26 +11,22 @@ import styles from "./styles/colorPicker.module.css";
 // can be integrated with the rest of the project...
 // Use case: <ColorPicker colors = {['#FF4747', '#474FFF', '#12A43B', '#E78225', '#A262E2']}/>
 export default function ColorPicker(props) {
-  // Initialize the color to be the first in the list:
+  // Initialize the color to be null
   const [color, setColor] = useState(null);
-
   useEffect(() => {
-    if (props.initial !== undefined && props.colors.includes(props.initial)) {
-      setColor(props.initial);
-      props.update(props.initial);
-    }
-
+    // Grab the color from the local state:
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
-        if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color")) {
+        if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color") && color == null) {
+            // set the color state
             setColor(res["sb-censor-color"]);
-            props.update(props.initial);
+            // pass this color back up to App.js:
+            props.update(res["sb-censor-color"]);
         }
     });
-
   }, [props]);
 
   // When the user clicks a new color, set the state
-  // to match the new color:
+  // to match the new color and update App.js
   const onChange = (newColor) => {
     setColor(newColor);
     props.update(newColor);
