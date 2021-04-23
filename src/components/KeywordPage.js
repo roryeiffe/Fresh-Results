@@ -1,12 +1,14 @@
 import './styles/KeywordPage.css';
 import React, { useState } from "react";
 
-function KeywordPage({cancelClick}) {
+
+function KeywordPage({cancelClick, update, initialWords}) {
 
 
   const [currentWordGroup, setCurrentWordGroup] = useState('default')
   const [currentMode, setCurrentMode] = useState('edit')
-  const [wordGroups, setWordGroups] = useState({'default': ['kills', 'steal', 'dies', 'resurrected' ], 'Star Wars': ['Luke Skywalker', 'Anakin', 'Darth Vader']})
+  // Initialize with words from App.js (which were taken from local storage)
+  const [wordGroups, setWordGroups] = useState(initialWords)
   const [toBeAddedWordGroup, setToBeAddedWordGroup] = useState('')
   
   const textAreaChange = (event) => {
@@ -15,6 +17,8 @@ function KeywordPage({cancelClick}) {
     const wordGroupsCopy = wordGroups
     wordGroupsCopy[currentWordGroup] = keywords
     setWordGroups(wordGroupsCopy)
+    // Update state in App.js (which also updates local storage)
+    update(wordGroups);
   }
 
   const submitWordGroupToBeAdded = () => {
@@ -28,7 +32,7 @@ function KeywordPage({cancelClick}) {
     setCurrentMode('edit')
     setToBeAddedWordGroup('')
   }
-  console.log(wordGroups[currentWordGroup].join())
+  // console.log(wordGroups[currentWordGroup].join())
    return (
     <div>
       {currentMode === 'edit'? 
