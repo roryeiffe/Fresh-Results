@@ -57,3 +57,10 @@
     transform: rotate(360deg);
   }
 }
+
+.keyword-click{
+  margin-top: 20px;
+  margin-bottom: auto;
+  line-height: 20px;
+  font-size: 20px;
+}

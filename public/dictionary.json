@@ -612,7 +612,7 @@
     "Strength": 3
   },
   {
-    "Word": "bad huy",
+    "Word": "bad guy",
     "Strength": 5
   },
   {
@@ -998,5 +998,277 @@
   {
     "Word": "inprisoned",
     "Strength": 7
+  },
+  {
+    "Word": "fatal",
+    "Strength": 10
+  },
+  {
+    "Word": "dying",
+    "Strength": 10
+  },
+  {
+    "Word": "invade",
+    "Strength": 5
+  },
+  {
+    "Word": "invasion",
+    "Strength": 5
+  },
+  {
+    "Word": "invaded",
+    "Strength": 5
+  },
+  {
+    "Word": "invading",
+    "Strength": 5
+  },
+  {
+    "Word": "saves",
+    "Strength": 7
+  },
+  {
+    "Word": "battle",
+    "Strength": 5
+  },
+  {
+    "Word": "battled",
+    "Strength": 5
+  },
+  {
+    "Word": "battling",
+    "Strength": 5
+  },
+  {
+    "Word": "duel",
+    "Strength": 5
+  },
+  {
+    "Word": "duels",
+    "Strength": 5
+  },
+  {
+    "Word": "dueled",
+    "Strength": 5
+  },
+  {
+    "Word": "dueling",
+    "Strength": 5
+  },
+  {
+    "Word": "funeral",
+    "Strength": 7
+  },
+  {
+    "Word": "spy",
+    "Strength": 6
+  },
+  {
+    "Word": "spies",
+    "Strength": 6
+  },
+  {
+    "Word": "spied",
+    "Strength": 6
+  },
+  {
+    "Word": "spying",
+    "Strength": 6
+  },
+  {
+    "Word": "exile",
+    "Strength": 6
+  },
+  {
+    "Word": "exiled",
+    "Strength": 6
+  },
+  {
+    "Word": "banished",
+    "Strength": 6
+  },
+  {
+    "Word": "eliminate",
+    "Strength": 9
+  },
+  {
+    "Word": "exterminate",
+    "Strength": 9
+  },
+  {
+    "Word": "annihilate",
+    "Strength": 9
+  },
+  {
+    "Word": "decimate",
+    "Strength": 9
+  },
+  {
+    "Word": "obliterate",
+    "Strength": 9
+  },
+  {
+    "Word": "eliminated",
+    "Strength": 9
+  },
+  {
+    "Word": "exterminated",
+    "Strength": 9
+  },
+  {
+    "Word": "annihilated",
+    "Strength": 9
+  },
+  {
+    "Word": "decimated",
+    "Strength": 9
+  },
+  {
+    "Word": "obliterated",
+    "Strength": 9
+  },
+  {
+    "Word": "slaughter",
+    "Strength": 9
+  },
+  {
+    "Word": "slaughtered",
+    "Strength": 9
+  },
+  {
+    "Word": "massacre",
+    "Strength": 9
+  },
+  {
+    "Word": "massacred",
+    "Strength": 9
+  },
+  {
+    "Word": "execute",
+    "Strength": 7
+  },
+  {
+    "Word": "executed",
+    "Strength": 10
+  },
+  {
+    "Word": "execution",
+    "Strength": 10
+  },
+  {
+    "Word": "executions",
+    "Strength": 10
+  },
+  {
+    "Word": "ostracize",
+    "Strength": 8
+  },
+  {
+    "Word": "ostracized",
+    "Strength": 8
+  },
+  {
+    "Word": "executioner",
+    "Strength": 8
+  },
+  {
+    "Word": "hitman",
+    "Strength": 7
+  },
+  {
+    "Word": "gunperson",
+    "Strength": 7
+  },
+  {
+    "Word": "butchered",
+    "Strength": 9
+  },
+  {
+    "Word": "eviserate",
+    "Strength": 9
+  },
+  {
+    "Word": "eviserated",
+    "Strength": 9
+  },
+  {
+    "Word": "stealing",
+    "Strength": 4
+  },
+  {
+    "Word": "blinded",
+    "Strength": 6
+  },
+  {
+    "Word": "gunfire",
+    "Strength": 5
+  },
+  {
+    "Word": "gunshot",
+    "Strength": 5
+  },
+  {
+    "Word": "attack",
+    "Strength": 7
+  },
+  {
+    "Word": "attacked",
+    "Strength": 7
+  },
+  {
+    "Word": "attacking",
+    "Strength": 7
+  },
+  {
+    "Word": "attacker",
+    "Strength": 7
+  },
+  {
+    "Word": "attacks",
+    "Strength": 7
+  },
+  {
+    "Word": "attackers",
+    "Strength": 7
+  },
+  {
+    "Word": "mortally",
+    "Strength": 8
+  },
+  {
+    "Word": "punch",
+    "Strength": 5
+  },
+  {
+    "Word": "punches",
+    "Strength": 5
+  },
+  {
+    "Word": "punching",
+    "Strength": 5
+  },
+  {
+    "Word": "beating",
+    "Strength": 5
+  },
+  {
+    "Word": "beats",
+    "Strength": 5
+  },
+  {
+    "Word": "fight",
+    "Strength": 5
+  },
+  {
+    "Word": "fighting",
+    "Strength": 5
+  },
+  {
+    "Word": "fought",
+    "Strength": 5
+  },
+  {
+    "Word": "fights",
+    "Strength": 5
   }
 ]

@@ -1,12 +1,7 @@
 .spoiler * {
-    color: red;
-    background-color: red;
     user-select: none;
 }
 
 .spoiler {
-    color: red;
-    background-color: red;
     user-select: none;
 }
-
