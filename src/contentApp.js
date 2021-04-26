@@ -126,8 +126,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //function has been made to go over all of the words and replace them due to
 //   javascript being dumb and how it needs access to the json
 function replace_function(result, customWords) {
-    console.log("Inside replace_function");
-    console.log(result, customWords);
 
     //// Will make dictionairy out of the JSON turned string made in result
 
