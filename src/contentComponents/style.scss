@@ -26,6 +26,15 @@ $primary: #E84855;
         box-sizing: border-box;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+        display: flex;
+        align-items: center;
+
+        .logo-area {
+            
+            width: 25px;
+            height: 25px;
+            margin-right:6px;
+        }
     }
 
     .sb-content-container {

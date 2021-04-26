@@ -191,7 +191,7 @@ const ContentPopup = () => {
 
     useEffect(() => {
         if (scanStatus == 1) {
-            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_UNDER_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
+            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_EXCEED_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
         }
     }, [scanStatus]);
 
@@ -227,7 +227,15 @@ const ContentPopup = () => {
         id="content-popup"
         className="sb-content-popup">
 
-        <div className="sb-content-header">SpoilerBlock</div>
+        <div className="sb-content-header">
+            <div className="logo-area">
+                <img
+                    width="100%"
+                    src={require('../logo-red.svg')}
+                />
+            </div>
+            <div className="logo-name-area">SpoilerBlock</div>
+        </div>
         <motion.div style={{ opacity: contentVisibilitySpring }} className="sb-content-container">
 
             {(() => {
