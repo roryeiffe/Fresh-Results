@@ -1,0 +1,15 @@
+#spoiler-block-popup {
+    position: fixed;
+    z-index: 100000000000000000;
+    top: 10px;
+    right: 10px;
+    
+    /* TODO insert theme colors here */
+    background-color: #EBEBEB;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #0B1014;
+    border-width: : 2px; 
+    border-style: solid ;
+    border-color: #E84855;
+}

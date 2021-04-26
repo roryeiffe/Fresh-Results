@@ -1,3 +1,4 @@
+import React from 'react';
 import questionMark from './questionMark.jpg';
 import styles from "./styles/moreInfo.module.css";
 
