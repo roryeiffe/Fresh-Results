@@ -122,7 +122,7 @@ const ContentPopup = () => {
         for (let i = 0; i < body.childNodes.length; ++i) {
 
             // skip the content popup
-            if (body.childNodes[i].getAttribute('id') == "sb-content-popup-container") continue;
+            if (!body.childNodes[i].getAttribute || body.childNodes[i].getAttribute('id') == "sb-content-popup-container") continue;
             body.childNodes[i].classList.add("sb-blurred");
         }
     }
@@ -141,7 +141,7 @@ const ContentPopup = () => {
         for (let i = 0; i < body.childNodes.length; ++i) {
 
             // skip the content popup
-            if (body.childNodes[i].getAttribute('id') == "sb-content-popup-container") continue;
+            if (!body.childNodes[i].getAttribute || body.childNodes[i].getAttribute('id') == "sb-content-popup-container") continue;
             body.childNodes[i].classList.remove("sb-blurred");
         }
     }
@@ -191,7 +191,7 @@ const ContentPopup = () => {
 
     useEffect(() => {
         if (scanStatus == 1) {
-            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_EXCEED_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
+            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_UNDER_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
         }
     }, [scanStatus]);
 
