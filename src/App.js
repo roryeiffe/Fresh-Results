@@ -16,9 +16,9 @@ function App() {
   const [color, setColor] = useState(null);
 
   /**
-   * This configuration of useEffect is similiar to componentDidMount () 
+   * This configuration of useEffect is similiar to componentDidMount ()
    * in class components.
-   * 
+   *
    * When the app loads, we want to read the stored color from local storage, if
    * it exists. Otherwise, use the default color (first color)
    */
@@ -58,7 +58,7 @@ function App() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, padding: `10px 10px` }}>
         {/* TODO put logo here */}
-        <div style={{ width: '30px', height: '30px', backgroundColor: `rgba(0, 0, 0, 0.3)`, marginRight: '10px' }} />
+        <img style={{ marginRight: '10px '}} src="logo.png" alt="SpoilerBlock logo" width="30" height="30"></img>
         <div style={{ fontWeight: 'bold', transform: `translateY(-2px)` }}>SpoilerBlock</div>
       </div>
 
