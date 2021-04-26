@@ -5,24 +5,29 @@ String.prototype.capitalize = function () {
 
 // Send a message to the background that the content script is up and running:
 chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
-  console.log(response.color);
   if (Object.prototype.hasOwnProperty.call(response, 'color')) {
+    // update values based on response:
     censorColor = response.color;
+    customWords = response.words;
+    // change the color of the webpage:
     changeColor();
   }
 });
 
 var censorColor;
+var customWords;
+// Change the color of the spoiled texts:
 const changeColor = () => {
+  // Get all elements that were labelled as a spoiler:
   let spoilers = document.querySelectorAll(".spoiler");
-
+  // loop through all spoiler elements and color them in:
   for (let i = 0; i < spoilers.length; i++) {
     spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
   }
-
+  // Get all elements that were labelled as a spoiler:
   spoilers = document.querySelectorAll(".spoiler *");
-
+  // loop through all spoiler elements and color them in:
   for (let i = 0; i < spoilers.length; i++) {
     spoilers[i].style.color = censorColor;
     spoilers[i].style.backgroundColor = censorColor;
@@ -31,17 +36,19 @@ const changeColor = () => {
 
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(`Data Recieved from [SpoilerBlock]`, request);
+  // console.log(`Data Recieved from [SpoilerBlock]`, request);
 
   if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
     sendResponse({ success: true });
     censorColor = request.sbCensorColor;
   }
   else {
+    // Update local variables based on response:
     sendResponse({ 'bruh': true });
     censorColor = request.color;
+    customWords = request.words;
   }
-
+  // Change the color of the webpage:
   changeColor();
 });
 
@@ -49,17 +56,35 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 //function has been made to go over all of the words and replace them due to
 //   javascript being dumb and how it needs access to the json
-function replace_function(result) {
+function replace_function(result, customWords) {
 
-  // console.log(result);
-
-  //// Will make ditionairy out of the JSON turned string made in result
+  //// Will make dictionairy out of the JSON turned string made in result
 
   var dictionary_words = {};
 
   for (var i = 0, temp_word; i < result.length; i++) {
     temp_word = result[i];
     dictionary_words[temp_word.Word] = temp_word;
+  }
+
+  // for each word group in custom words:
+  for (const group in customWords){
+    let wordList = customWords[group];
+    // loop through the sub list:
+    for (let i = 0; i < wordList.length; i ++) {
+      // add each word to the dictionary:
+      if (wordList[i].toLowerCase() !== "") {
+        temp_word = {
+          Word: wordList[i].toLowerCase(),
+          Strength: 10 //custom words will get max strength
+        }
+        dictionary_words[temp_word.Word] = temp_word;
+      }
+    }
+  }
+
+  for (const w in dictionary_words) {
+    console.log(dictionary_words[w].Word);
   }
 
   // Get all elements from the page:
@@ -77,7 +102,6 @@ function replace_function(result) {
         // Will store the replaced text:
         var replacedText = text;
 
-
         //need to break up long strings (i.e. replacedText) by spaces to check for individual words
         var splitText = text.split(" ");
         //loop going through each word
@@ -92,9 +116,17 @@ function replace_function(result) {
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
             // ACCOUNT FOR UPPERCASE WORDS:
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
-            // Account for plural words:
-            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + 's' + '\\b'), '<spoiler>');
+            
           }  
+          //fix for checking plural words (just checking if all but last letter is key)
+          if(keyWord.slice(0,-1) in dictionary_words){
+            // Account for plural words:
+            console.log(keyWord);
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word + 's' + '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.capitalize() +'s'+ '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.toUpperCase() +'S' + '\\b'), '<SPOILER>');
+
+          }
         }
 
         // If we changed something, replace element on the page:
@@ -114,4 +146,4 @@ function replace_function(result) {
 fetch(chrome.runtime.getURL('dictionary.json'))
   .then(r => r.json())
   //.then(data => console.log(data))
-  .then(data => replace_function(data)) //calling the function that does all of the work
+  .then(data => replace_function(data, customWords)) //calling the function that does all of the work
