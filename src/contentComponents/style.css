@@ -1,0 +1,20 @@
+#sb-content-popup-container {
+}
+
+#content-popup.sb-content-popup {
+    position: fixed;
+    z-index: 1000000000000000000;
+    background-color: rgba(255,255,255,0);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(0px);
+    transition: filter 0.25s;
+}
+
+
+.sb-blurred {
+    filter: blur(6px);
+    /* background-color: rgba(255,255,255,0.5); */
+}

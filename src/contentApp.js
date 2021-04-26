@@ -1,7 +1,13 @@
 import DictionaryJSON from './dictionary.json'
+import React from "react";
+import ReactDOM from "react-dom";
+import ContentPopup from './contentComponents/ContentPopup';
+import './contentComponents/style.css';
 
 window.onload = async () => {
 
+    console.log("Inside Content Script onLoad!");
+    setupContentReactView();
     /*
     // initialize the parsing when the page loads
     replace_function(DictionaryJSON, customWords);
@@ -216,3 +222,23 @@ fetch(chrome.runtime.getURL('dictionary.json'))
     .then(data => replace_function(data, customWords)) //calling the function that does all of the work
 
 */
+
+
+const setupContentReactView = () => {
+    // 1. Create the element that will hold our popup
+    let contentContainerID = "sb-content-popup-container";
+    let contentPopupContainer = document.createElement('div');
+    contentPopupContainer.setAttribute("id", contentContainerID);
+
+    // 2. Insert this element into the page
+    let body = document.getElementsByTagName('body')[0] || undefined;
+    if (body == undefined) {
+        console.error("No body tag found on this page.");
+        return;
+    }
+
+    body.appendChild(contentPopupContainer);
+
+    // 3. Inject the app into this container
+    ReactDOM.render(<ContentPopup />, document.getElementById(contentContainerID));
+}
