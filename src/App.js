@@ -57,7 +57,7 @@ function App() {
     // Send a message to the background script with the color
     // and spoiler threshold values only if data is not null:
     if (color !== null && customWords !== null) {
-      chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
+      chrome.runtime.sendMessage({ type: "POPUP_PARAMS_UPDATE", color: color, threshold: threshold, words: customWords }, function (response) {
         // Log the background's response:
         console.log(response.farewell);
       });
@@ -67,7 +67,7 @@ function App() {
   // when custom words are updated, update storage
   const update = (newWords) => {
     setCustomWords(newWords);
-    chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
+    chrome.runtime.sendMessage({ type: "POPUP_PARAMS_UPDATE", color: color, threshold: threshold, words: customWords }, function (response) {
       // Log the background's response:
       console.log(response.farewell);
     });

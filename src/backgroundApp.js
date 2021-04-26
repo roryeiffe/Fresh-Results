@@ -25,14 +25,14 @@ const startup = () => {
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
 
         if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color")) {
-            color = res["sb-censor-color"];
+            updateColor(res["sb-censor-color"]);
         }
     });
     // get custom words from local storage:
     chrome.storage.sync.get(`custom-words`, (res) => {
 
         if (Object.prototype.hasOwnProperty.call(res, "custom-words")) {
-            words = res["custom-words"];
+            updateWords(res["custom-words"]);
         }
     });
     // if data is null, update with the default:
@@ -46,54 +46,51 @@ startup();
 
 const processPageMount = (request, sender, sendResponse) => {
     // if this a request from the content page:
-    if (sender.tab) {
-        // Send back the color and custom words:
-        console.log(`Sending color (${color}) to the content script!`);
-        sendResponse({ color: color, words: words });
-    }
-    // If this is a request from the extension:
-    else {
-        // Take the data from the request:
-        if (request.color == null || request.words == null) {
-            console.error("Color or custom words are null...");
-            sendResponse({ farewell: `Background did not receive the data` });
-        }
-        else {
-            // update values for color and words:
-            updateColor(request.color);
-            updateWords(request.words);
+    if (!sender.tab) return;
+    // Send back the color and custom words:
+    console.log(`Sending color (${color}) to the content script!`);
+    sendResponse({ color: color, words: words });
 
-            // Let the extension know that the background
-            // received the data:
-            sendResponse({ farewell: `Background received the data => ${color} ${words}` });
-
-            // Send the current color to all active tabs
-            chrome.tabs.query({}, (tabs) => {
-                console.log("Sending updated color to all tabs.");
-                for (var i = 0; i < tabs.length; ++i) {
-
-                    /**
-                     * This will throw an error for every tab it is unable to find.
-                     * It's fine for now.
-                     */
-                    chrome.tabs.sendMessage(tabs[i].id, { color: color, words: words }, (response) => {
-                        // console.log(response);
-                    });
-                }
-            });
-
-        }
-    }
 }
 
-const processPageDocumentInject = (request, sender, sendResponse) => {
-    console.log("PROCESSING PAGE DOCUMENT INJECT");
-    debugger;
+const processPopupParamsUpdate = (request, sender, sendResponse) => {
+    // Take the data from the request:
+    if (request.color == null || request.words == null) {
+        console.error("Color or custom words are null...");
+        sendResponse({ farewell: `Background did not receive the data` });
+    }
+    else {
+        // update values for color and words:
+        updateColor(request.color);
+        updateWords(request.words);
+
+        // Let the extension know that the background
+        // received the data:
+        sendResponse({ farewell: `Background received the data => ${color} ${words}` });
+
+        // Send the current color to all active tabs
+        chrome.tabs.query({}, (tabs) => {
+            console.log("Sending updated color to all tabs.");
+            for (var i = 0; i < tabs.length; ++i) {
+
+                /**
+                 * This will throw an error for every tab it is unable to find.
+                 * It's fine for now.
+                 */
+                chrome.tabs.sendMessage(tabs[i].id, { color: color, words: words }, (response) => {
+                    // console.log(response);
+                });
+            }
+        });
+
+    }
 }
 
 // Listen for incoming messages:
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
+
+        debugger;
 
         if (!Object.prototype.hasOwnProperty.call(request, 'type')) {
             console.error(`Message recieved with no type...`);
@@ -104,8 +101,8 @@ chrome.runtime.onMessage.addListener(
             case "PAGE_MOUNT":
                 processPageMount(request, sender, sendResponse);
                 break;
-            case "PAGE_DOCUMENT_INJECT":
-                processPageDocumentInject(request, sender, sendResponse);
+            case "POPUP_PARAMS_UPDATE":
+                processPopupParamsUpdate(request, sender, sendResponse);
                 break;
             default:
                 console.error(`Request type (${request['type']}) not recognized.`);

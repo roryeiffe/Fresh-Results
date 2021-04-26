@@ -5,62 +5,8 @@ import ContentPopup from './contentComponents/ContentPopup';
 import './contentComponents/style.scss';
 
 window.onload = async () => {
-
-    console.log("Inside Content Script onLoad!");
     setupContentReactView();
-    /*
-    // initialize the parsing when the page loads
-    replace_function(DictionaryJSON, customWords);
-
-    // load the popup onto the page
-    let unique_id = "spoiler-block-popup";
-
-    var popupDiv = document.createElement('div');
-    popupDiv.setAttribute('id', unique_id);
-
-    // insert the content.html into this popup
-
-    let contentHTML = null
-    let fileReader = new FileReader();
-
-    fileReader.onload = () => {
-        console.log("In onload");
-        contentHTML = fileReader.result;
-
-        // wait for the content to be read from the file
-        let contentHtmlDom = new DOMParser().parseFromString(contentHTML, "text/html");
-
-        console.log("Successfully parsed the file!");
-        console.log(contentHtmlDom);
-
-        // Grab the body element from the contentHtmlDom and
-        // append its children to the
-        // opopupDiv
-        let targetChild = contentHtmlDom.getElementsByTagName('body')[0] || undefined
-        if (targetChild == undefined) {
-            console.error("No body found in parsed html file");
-            return;
-        }
-
-        for (let i = 0; i < targetChild.childNodes.length; ++i) {
-            popupDiv.append(targetChild.childNodes[i]);
-        }
-
-        // insert into the body
-        let body = document.getElementsByTagName('body')[0] || undefined
-        if (body == undefined) {
-            console.error("No body found on this page.");
-            return;
-        }
-
-        body.appendChild(popupDiv);
-        console.log("Successfully appended the popup onto this page");
-    }
-
-    let contentHtmlURL = chrome.runtime.getURL('content.html');
-    let contentHTMLBlob = await fetch(contentHtmlURL).then(r => r.blob());
-    fileReader.readAsText(contentHTMLBlob);
-    */
+    init();
 }
 
 //Capitalizing word
@@ -68,18 +14,21 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-// Send a message to the background that the content script is up and running:
-chrome.runtime.sendMessage({ greeting: "from content", type: 'PAGE_MOUNT' }, function (response) {
-    if (Object.prototype.hasOwnProperty.call(response, 'color')) {
-        // update values based on response:
-        censorColor = response.color;
-        customWords = response.words;
+const init = () => {
+    // Send a message to the background that the content script is up and running:
+    chrome.runtime.sendMessage({ greeting: "from content", type: 'PAGE_MOUNT' }, function (response) {
+        if (Object.prototype.hasOwnProperty.call(response, 'color')) {
 
-        replace_function(DictionaryJSON, customWords);
-        // change the color of the webpage:
-        changeColor();
-    }
-});
+            // update values based on response:
+            censorColor = response.color;
+            customWords = response.words;
+
+            replace_function(DictionaryJSON, customWords);
+            // change the color of the webpage:
+            changeColor();
+        }
+    });
+}
 
 var censorColor;
 var customWords;
@@ -104,6 +53,8 @@ const changeColor = () => {
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // console.log(`Data Recieved from [SpoilerBlock]`, request);
+
+    console.log(`Recieved a message!`, request, sender);
 
     if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
         sendResponse({ success: true });
