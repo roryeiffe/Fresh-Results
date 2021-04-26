@@ -10,6 +10,7 @@
 
 # production
 /build
+/[Cc]ustomBuild
 
 # misc
 .DS_Store

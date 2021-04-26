@@ -1,5 +1,25 @@
 window.onload = async () => {
 
+  /**
+   * ! Testing: Send the document object to the
+   * APP.JS to inject React!
+  */
+  let docBody = document.getElementsByTagName('body')[0] || undefined;
+  console.log(`Sending document body =>`, docBody);
+
+  chrome.runtime.sendMessage(
+    {
+      pageDocument: docBody,
+      type: 'PAGE_DOCUMENT_INJECT'
+    },
+    function (response) {
+      console.log(`PageDocument Response: `, response);
+    });
+
+  /**
+   * ! END TEST
+   */
+
   // load the popup onto the page
   let unique_id = "spoiler-block-popup";
 
@@ -56,7 +76,7 @@ String.prototype.capitalize = function () {
 }
 
 // Send a message to the background that the content script is up and running:
-chrome.runtime.sendMessage({ greeting: "from content" }, function (response) {
+chrome.runtime.sendMessage({ greeting: "from content", type: 'PAGE_MOUNT' }, function (response) {
   if (Object.prototype.hasOwnProperty.call(response, 'color')) {
     // update values based on response:
     censorColor = response.color;
@@ -120,10 +140,10 @@ function replace_function(result, customWords) {
   }
 
   // for each word group in custom words:
-  for (const group in customWords){
+  for (const group in customWords) {
     let wordList = customWords[group];
     // loop through the sub list:
-    for (let i = 0; i < wordList.length; i ++) {
+    for (let i = 0; i < wordList.length; i++) {
       // add each word to the dictionary:
       if (wordList[i].toLowerCase() !== "") {
         temp_word = {
@@ -168,15 +188,15 @@ function replace_function(result, customWords) {
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
             // ACCOUNT FOR UPPERCASE WORDS:
             replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
-            
-          }  
+
+          }
           //fix for checking plural words (just checking if all but last letter is key)
-          if(keyWord.slice(0,-1) in dictionary_words){
+          if (keyWord.slice(0, -1) in dictionary_words) {
             // Account for plural words:
             console.log(keyWord);
-            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word + 's' + '\\b'), '<spoiler>');
-            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.capitalize() +'s'+ '\\b'), '<spoiler>');
-            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0,-1)].Word.toUpperCase() +'S' + '\\b'), '<SPOILER>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word + 's' + '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.capitalize() + 's' + '\\b'), '<spoiler>');
+            replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.toUpperCase() + 'S' + '\\b'), '<SPOILER>');
 
           }
         }
@@ -184,7 +204,7 @@ function replace_function(result, customWords) {
         // If we changed something, replace element on the page:
         if (replacedText !== text) {
           // console.log("HERE");
-          element.classList.add('spoiler'); 
+          element.classList.add('spoiler');
           element.replaceChild(document.createTextNode(replacedText), node)
         }
       }
