@@ -1,0 +1,127 @@
+$white: #EBEBEB;
+$black: #0B1014;
+$primary: #E84855;
+
+#sb-content-popup-container {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#content-popup.sb-content-popup {
+    position: fixed;
+    z-index: 1000000000000000000;
+    background-color: $white;
+    top: 30px;
+    left: 30px;
+    width: 400px;
+    box-shadow: 0px 0px 20px rgba(11, 16, 20, 0.2);
+}
+
+#content-popup.sb-content-popup {
+    .sb-content-header {
+        background-color: $black;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        color: $white;
+        font-weight: 600;
+        box-sizing: border-box;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .sb-content-container {
+        border-left: 1px solid #8E8E8E;
+        border-right: 1px solid #8E8E8E;
+        border-bottom: 1px solid #8E8E8E;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        box-sizing: border-box;
+        padding: 5px 10px;
+        background-color: $white;
+        font-size: 0.85rem;
+        position: relative;
+    }
+}
+
+.sb-content-loader {
+    border: 1px solid $black;
+    height: 18px;
+    border-radius: 30px;
+    position: relative;
+    box-sizing: border-box;
+
+    .loader-fill {
+        height: 12px;
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        background-color: $primary;
+        transition: width 0.15s;
+        border-radius: 30px;
+    }
+}
+
+.sb-blurred {
+    filter: blur(8px);
+}
+
+#exceeds-threshold {
+
+    .threshold-details {
+        display: flex;
+        align-items: center;
+
+        .percentage-area_ {
+            font-size: 1.4rem;
+            color: $primary;
+            font-weight: 600;
+        }
+
+        .text-details-area_{
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+    }
+}
+
+.sb-button {
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+    padding: 0 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    position: relative;
+
+    &::before {
+        border-radius: 5px;
+        content: '';
+        position: absolute;
+        left: -2px; right: -2px;
+        top: -2px; bottom: -2px;
+        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+        transition: box-shadow 0.15s;
+    }
+
+    &:active::before {
+        box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.45);
+    }
+}
+
+.under-threshold {
+
+    .slider {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 5px;
+        background-color: #CFCFCF;
+
+        .slider_ {
+            width: 0%;
+            transition: width 0.25s;
+            height: 100%;
+            background-color: $primary;
+        }
+    }
+}

@@ -2,7 +2,7 @@ import DictionaryJSON from './dictionary.json'
 import React from "react";
 import ReactDOM from "react-dom";
 import ContentPopup from './contentComponents/ContentPopup';
-import './contentComponents/style.css';
+import './contentComponents/style.scss';
 
 window.onload = async () => {
 
