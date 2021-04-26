@@ -17,10 +17,17 @@
         "<all_urls>"
       ],
       "css":["styles.css"],
-      "js": [ "content.js"]
+      "js": ["content.js"]
+    },
+    {
+      "matches": ["*://*.google.com/*"],
+      "js": ["remove.js"]
     }
   ],
   "background": {
     "scripts": ["background.js"]
-  }
+  },
+  "web_accessible_resources": [
+    "dictionary.json"
+  ]
 }
