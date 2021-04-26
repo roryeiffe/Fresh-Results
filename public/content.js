@@ -1042,13 +1042,13 @@ const changeColor = () => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(`Data Recieved from [SpoilerBlock]`, request);
 
-  if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
-    sendResponse({ success: true });
-    censorColor = request.sbCensorColor;
-  }
-  else {
-    sendResponse({ 'bruh': true });
+  if (Object.prototype.hasOwnProperty.call(request, 'color') && request.color != null) {
+    sendResponse({ colorSuccess: true });
     censorColor = request.color;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
+    sendResponse({ thresholdSuccess: true });
     censorThreshold = request.threshold;
   }
 

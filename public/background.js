@@ -50,20 +50,19 @@ chrome.runtime.onMessage.addListener(
         // If this is a request from the extension:
         else {
             // Take the data from the request:
-            if (request.color == null && request.threshold == null) {
-                console.error("Color and threshold are both null...");
+            if (request.color == null) {
+                console.error("Color is null...");
             }
             else {
                 updateColor(request.color);
-                updateThreshold(request.threshold);
 
                 // Let the extension know that the background
                 // received the data:
-                sendResponse({ farewell: `Background received the color data => ${color} and threshold data => ${threshold}` });
+                sendResponse({ farewell: `Background received the color data => ${color}` });
 
                 // Send the current color to all active tabs
                 chrome.tabs.query({}, (tabs) => {
-                    console.log("Sending updated color and threshold to all tabs.");
+                    console.log("Sending updated color to all tabs.");
                     for (var i = 0; i < tabs.length; ++i) {
 
                         /**
@@ -71,13 +70,41 @@ chrome.runtime.onMessage.addListener(
                          * It's fine for now.
                          */
 
-                        chrome.tabs.sendMessage(tabs[i].id, { color: color, threshold: threshold }, (response) => {
+                        chrome.tabs.sendMessage(tabs[i].id, { color: color }, (response) => {
                             // console.log(response);
                         });
                     }
                 });
 
             }
+            if (request.threshold == null) {
+                console.error("Threshold is null...");
+            }
+            else {
+                updateThreshold(request.threshold);
+
+                // Let the extension know that the background
+                // received the data:
+                sendResponse({ farewell: `Background received the threshold data => ${threshold}` });
+
+                // Send the current color to all active tabs
+                chrome.tabs.query({}, (tabs) => {
+                    console.log("Sending updated threshold to all tabs.");
+                    for (var i = 0; i < tabs.length; ++i) {
+
+                        /**
+                         * This will throw an error for every tab it is unable to find.
+                         * It's fine for now.
+                         */
+
+                        chrome.tabs.sendMessage(tabs[i].id, { threshold: threshold }, (response) => {
+                            // console.log(response);
+                        });
+                    }
+                });
+
+            }
+
         }
 
     }
