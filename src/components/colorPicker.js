@@ -15,7 +15,7 @@ export default function ColorPicker(props) {
   const [color, setColor] = useState(null);
 
   useEffect(() => {
-    if (props.initial != undefined && props.colors.includes(props.initial)) {
+    if (typeof props.initial !== "undefined" && props.colors.includes(props.initial)) {
       setColor(props.initial);
       props.update(props.initial);
     }
@@ -27,7 +27,7 @@ export default function ColorPicker(props) {
         }
     });
 
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When the user clicks a new color, set the state
   // to match the new color:
