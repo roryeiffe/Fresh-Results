@@ -56,6 +56,8 @@ const setupGoogleSuggestionBlocker = () => {
 }
 
 const blockSuggestions = (evt) => {
+    if (!SB_ENABLED) return;
+
     let suggestionsContainer = document.querySelector('ul.erkvQe');
     if (!suggestionsContainer) {
         console.error("Failed to find the suggestions container");
@@ -73,7 +75,7 @@ const blockSuggestions = (evt) => {
             suggestion.classList.add('spoiler');
             suggestion.style.color = censorColor;
             suggestion.style.backgroundColor = censorColor;
-            textNode.innerText = "";
+            textNode.innerText = "<redacted>";
         }
         else {
             suggestion.classList.remove('spoiler');
