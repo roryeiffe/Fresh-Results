@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ContentPopup from './contentComponents/ContentPopup';
 import './contentComponents/style.scss';
+import { domMax } from 'framer-motion';
 
 window.onload = async () => {
     init();
@@ -159,41 +160,77 @@ function replace_function(result, customWords) {
                 //need to break up long strings (i.e. replacedText) by spaces to check for individual words
                 var splitText = text.split(" ");
                 //loop going through each word
-                for (var k = 0; k < splitText.length; k += 1) {
+
+                let hasSpoiler = false;
+                for (var k = 0; k < splitText.length && !hasSpoiler; k += 1) {
                     //keys are in lowercase so this fixes the issue of capitalized words
                     let keyWord = splitText[k].toLowerCase();
-                    //if individual word is a key
+
                     if (keyWord in dictionary_words) {
-                        //will replace whole and capitalized whole words that are in result
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + '\\b'), '<spoiler>');
-                        // Account for capital words:
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
-                        // ACCOUNT FOR UPPERCASE WORDS:
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
+                        hasSpoiler = true;
 
                     }
-                    //fix for checking plural words (just checking if all but last letter is key)
-                    if (keyWord.slice(0, -1) in dictionary_words) {
-                        // Account for plural words:
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word + 's' + '\\b'), '<spoiler>');
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.capitalize() + 's' + '\\b'), '<spoiler>');
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.toUpperCase() + 'S' + '\\b'), '<SPOILER>');
-
+                    if (!hasSpoiler && keyWord.slice(0, -1) in dictionary_words) {
+                        hasSpoiler = true;
                     }
                 }
 
                 // If we changed something, replace element on the page:
-                if (replacedText !== text) {
+                if (hasSpoiler) {
                     // console.log("HERE");
                     element.classList.add('spoiler');
-                    element.replaceChild(document.createTextNode(replacedText), node)
+                    // element.replaceChild(document.createTextNode(replacedText), node)
                 }
             }
         }
     }
     changeColor();
+}
 
+/**
+ * Calculate how many augments are needed to transform [word] into [target].
+ * An augment can include an insertion, deletion, and substitution
+ */
+let dp = [];
+export const minAugments = (target, word) => {
 
+    if (target.length == 0 || word.length == 0)
+        return Math.max(target.length, word.length);
+
+    // update size of dp
+    for (let i = 0; i < dp.length; ++i) {
+        // each row should be size word.length + 1
+        if (dp[i].length < word.length + 1)
+            dp[i] = Array.from(new Array(word.length + 1), _ => 0);
+    }
+    for (let i = dp.length; i < target.length + 1; ++i) {
+        dp.push(Array.from(new Array(word.length + 1), _ => 0));
+    }
+
+    // size of dp should be AT LEAST target.length * word.length
+    if (dp.length < target.length || dp[0].length < word.length) {
+        console.error("DP IS TOO SMALL");
+        return Number.MAX_VALUE;
+    }
+
+    // set th einitial value
+    dp[0][0] = 0;
+    for (let i = 0; i < target.length; ++i) dp[i][0] = i;
+    for (let j = 0; j < word.length; ++j) dp[0][j] = j;
+    for (let i = 1; i < target.length + 1; ++i) {
+        for (let j = 1; j < word.length + 1; ++j) {
+
+            let diff = target[i - 1] != word[j - 1];
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + (diff ? 1 : 0)
+            );
+
+        }
+    }
+
+    return dp[target.length][word.length];
 }
 
 const setupContentReactView = () => {

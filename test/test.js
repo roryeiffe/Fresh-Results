@@ -7,6 +7,8 @@
 const _ = require('assert');
 const { assert, expect, should } = require('chai');
 
+const { minAugments } = require('../src/contentApp.js')
+
 /** Example Test */
 describe("Example Test Group 1", () => {
     describe("Example Test 1", () => {
@@ -25,4 +27,13 @@ describe("Example Test Group 1", () => {
             });
 
     });
+});
+
+describe("minAugments", () => {
+
+    it("should work",
+        () => {
+            expect(minAugments("test", "test")).to.eq(0);
+        });
+
 });
