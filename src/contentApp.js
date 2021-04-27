@@ -36,6 +36,74 @@ const init = () => {
 
         blockSpoilers();
     });
+
+    setupGoogleSuggestionBlocker();
+}
+
+const setupGoogleSuggestionBlocker = () => {
+
+    let searchInput = document.querySelector("input.gLFyf");
+    if (!searchInput) {
+        console.error("No search input found");
+        return;
+    }
+
+    // add event listeners to block the suggestions from the
+    // search list
+    searchInput.addEventListener('keyup', blockSuggestions);
+    searchInput.addEventListener('click', blockSuggestions);
+    searchInput.addEventListener('change', blockSuggestions);
+}
+
+const blockSuggestions = (evt) => {
+    let suggestionsContainer = document.querySelector('ul.erkvQe');
+    if (!suggestionsContainer) {
+        console.error("Failed to find the suggestions container");
+    }
+
+    // check through the elements
+    for (let i = 0; i < suggestionsContainer.childNodes.length; ++i) {
+
+        let suggestion = suggestionsContainer.childNodes[i];
+        let textNode = suggestion.querySelector('div.LaCQgf div.zRAHie div.aypzV span')
+
+        if (!textNode) continue;
+        if (hasSpoilers(textNode.innerText)) {
+            // block the node
+            suggestion.classList.add('spoiler');
+            suggestion.style.color = censorColor;
+            suggestion.style.backgroundColor = censorColor;
+            textNode.innerText = "";
+        }
+        else {
+            suggestion.classList.remove('spoiler');
+            suggestion.style.color = "";
+            suggestion.style.backgroundColor = "";
+        }
+    }
+
+}
+
+const hasSpoilers = (txt) => {
+
+    const dictionary_words = createDictionaryWords(DictionaryJSON);
+    var splitText = txt.split(" ");
+    //loop going through each word
+
+    let hasSpoiler = false;
+    for (var k = 0; k < splitText.length && !hasSpoiler; ++k) {
+        //keys are in lowercase so this fixes the issue of capitalized words
+        let keyWord = splitText[k].toLowerCase();
+
+        if (keyWord in dictionary_words) {
+            hasSpoiler = true;
+        }
+        if (!hasSpoiler && keyWord.slice(0, -1) in dictionary_words) {
+            hasSpoiler = true;
+        }
+    }
+
+    return hasSpoiler;
 }
 
 const disableSpoilerBlock = () => {
@@ -107,7 +175,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (updated) blockSpoilers();
 });
 
+const createDictionaryWords = (dictionary_) => {
 
+    let dictionary_words = {};
+
+    for (var i = 0, temp_word; i < dictionary_.length; i++) {
+        temp_word = dictionary_[i];
+        dictionary_words[temp_word.Word] = temp_word;
+    }
+
+    for (const group in customWords) {
+        let wordList = customWords[group];
+        // loop through the sub list:
+        for (let i = 0; i < wordList.length; ++i) {
+            // add each word to the dictionary:
+            if (wordList[i].toLowerCase() !== "") {
+                temp_word = {
+                    Word: wordList[i].toLowerCase(),
+                    Strength: 10 //custom words will get max strength
+                }
+                dictionary_words[temp_word.Word] = temp_word;
+            }
+        }
+    }
+
+    return dictionary_words
+}
 
 //function has been made to go over all of the words and replace them due to
 //   javascript being dumb and how it needs access to the json
@@ -155,7 +248,6 @@ function replace_function(result, customWords) {
                 // Grab the text value:
                 var text = node.nodeValue;
                 // Will store the replaced text:
-                var replacedText = text;
 
                 //need to break up long strings (i.e. replacedText) by spaces to check for individual words
                 var splitText = text.split(" ");

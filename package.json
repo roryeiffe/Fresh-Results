@@ -2,7 +2,6 @@
   "name": "spoiler-block",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@babel/runtime": "^7.13.17",
     "framer-motion": "^4.1.9",
