@@ -5,62 +5,7 @@ import ContentPopup from './contentComponents/ContentPopup';
 import './contentComponents/style.scss';
 
 window.onload = async () => {
-
-    console.log("Inside Content Script onLoad!");
-    setupContentReactView();
-    /*
-    // initialize the parsing when the page loads
-    replace_function(DictionaryJSON, customWords);
-
-    // load the popup onto the page
-    let unique_id = "spoiler-block-popup";
-
-    var popupDiv = document.createElement('div');
-    popupDiv.setAttribute('id', unique_id);
-
-    // insert the content.html into this popup
-
-    let contentHTML = null
-    let fileReader = new FileReader();
-
-    fileReader.onload = () => {
-        console.log("In onload");
-        contentHTML = fileReader.result;
-
-        // wait for the content to be read from the file
-        let contentHtmlDom = new DOMParser().parseFromString(contentHTML, "text/html");
-
-        console.log("Successfully parsed the file!");
-        console.log(contentHtmlDom);
-
-        // Grab the body element from the contentHtmlDom and
-        // append its children to the
-        // opopupDiv
-        let targetChild = contentHtmlDom.getElementsByTagName('body')[0] || undefined
-        if (targetChild == undefined) {
-            console.error("No body found in parsed html file");
-            return;
-        }
-
-        for (let i = 0; i < targetChild.childNodes.length; ++i) {
-            popupDiv.append(targetChild.childNodes[i]);
-        }
-
-        // insert into the body
-        let body = document.getElementsByTagName('body')[0] || undefined
-        if (body == undefined) {
-            console.error("No body found on this page.");
-            return;
-        }
-
-        body.appendChild(popupDiv);
-        console.log("Successfully appended the popup onto this page");
-    }
-
-    let contentHtmlURL = chrome.runtime.getURL('content.html');
-    let contentHTMLBlob = await fetch(contentHtmlURL).then(r => r.blob());
-    fileReader.readAsText(contentHTMLBlob);
-    */
+    init();
 }
 
 //Capitalizing word
@@ -68,21 +13,140 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-// Send a message to the background that the content script is up and running:
-chrome.runtime.sendMessage({ greeting: "from content", type: 'PAGE_MOUNT' }, function (response) {
-    if (Object.prototype.hasOwnProperty.call(response, 'color')) {
-        // update values based on response:
-        censorColor = response.color;
-        customWords = response.words;
+let SB_ENABLED = false;
+const init = () => {
+    // Send a message to the background that the content script is up and running:
+    chrome.runtime.sendMessage({ type: 'PAGE_MOUNT' }, function (response) {
+        console.log(`Page Mount Response =>`, response);
 
-        replace_function(DictionaryJSON, customWords);
-        // change the color of the webpage:
-        changeColor();
+        // check that the spoiler block is enabled
+        if (!Object.prototype.hasOwnProperty.call(response, "sb-enabled")) {
+            console.error("No specificiation as to whether SpoilerBlock is enabled or disabled.");
+            return;
+        }
+
+        SB_ENABLED = response["sb-enabled"];
+
+        if (Object.prototype.hasOwnProperty.call(response, 'color') && request.color != null) {
+            // update values based on response:
+            censorColor = response.color;
+            sendResponse({ colorSuccess: true });
+        }
+
+        if (Object.prototype.hasOwnProperty.call(response, 'words') && request.words != null) {
+            // update values based on response:
+            customWords = response.words;
+            sendResponse({ wordsSuccess: true });
+        }
+
+        if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
+            censorThreshold = request.threshold;
+            sendResponse({ thresholdSuccess: true });
+        }
+
+        blockSpoilers();
+    });
+
+    setupGoogleSuggestionBlocker();
+}
+
+const setupGoogleSuggestionBlocker = () => {
+
+    let searchInput = document.querySelector("input.gLFyf");
+    if (!searchInput) {
+        console.error("No search input found");
+        return;
     }
-});
+
+    // add event listeners to block the suggestions from the
+    // search list
+    searchInput.addEventListener('keyup', blockSuggestions);
+    searchInput.addEventListener('click', blockSuggestions);
+    searchInput.addEventListener('change', blockSuggestions);
+}
+
+const blockSuggestions = (evt) => {
+    if (!SB_ENABLED) return;
+
+    let suggestionsContainer = document.querySelector('ul.erkvQe');
+    if (!suggestionsContainer) {
+        console.error("Failed to find the suggestions container");
+    }
+
+    // check through the elements
+    for (let i = 0; i < suggestionsContainer.childNodes.length; ++i) {
+
+        let suggestion = suggestionsContainer.childNodes[i];
+        let textNode = suggestion.querySelector('div.LaCQgf div.zRAHie div.aypzV span')
+
+        if (!textNode) continue;
+        if (hasSpoilers(textNode.innerText)) {
+            // block the node
+            suggestion.classList.add('spoiler');
+            suggestion.style.color = censorColor;
+            suggestion.style.backgroundColor = censorColor;
+            textNode.innerText = "<redacted>";
+        }
+        else {
+            suggestion.classList.remove('spoiler');
+            suggestion.style.color = "";
+            suggestion.style.backgroundColor = "";
+        }
+    }
+
+}
+
+const hasSpoilers = (txt) => {
+
+    const dictionary_words = createDictionaryWords(DictionaryJSON);
+    var splitText = txt.split(" ");
+    //loop going through each word
+
+    let hasSpoiler = false;
+    for (var k = 0; k < splitText.length && !hasSpoiler; ++k) {
+        //keys are in lowercase so this fixes the issue of capitalized words
+        let keyWord = splitText[k].toLowerCase();
+
+        if (keyWord in dictionary_words) {
+            hasSpoiler = true;
+        }
+        if (!hasSpoiler && keyWord.slice(0, -1) in dictionary_words) {
+            hasSpoiler = true;
+        }
+    }
+
+    return hasSpoiler;
+}
+
+const disableSpoilerBlock = () => {
+    // disable the spoiler blocking
+    let spoilers = document.querySelectorAll(".spoiler");
+    // loop through all spoiler elements and color them in:
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+    }
+    // Get all elements that were labelled as a spoiler:
+    spoilers = document.querySelectorAll(".spoiler *");
+    // loop through all spoiler elements and color them in:
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+    }
+}
+
+const blockSpoilers = () => {
+    if (!SB_ENABLED) return;
+
+    // setupContentReactView();
+
+    replace_function(DictionaryJSON, customWords);
+    changeColor();
+}
 
 var censorColor;
 var customWords;
+var censorThreshold;
 // Change the color of the spoiled texts:
 const changeColor = () => {
     // Get all elements that were labelled as a spoiler:
@@ -101,33 +165,85 @@ const changeColor = () => {
     }
 }
 
+const clearColor = () => {
+
+    let spoilers = document.querySelectorAll(".spoiler *");
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+        spoilers[i].classList.remove('spoiler');
+    }
+
+    spoilers = document.querySelectorAll(".spoiler");
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+        spoilers[i].classList.remove('spoiler');
+    }
+}
+
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    // console.log(`Data Recieved from [SpoilerBlock]`, request);
 
-    if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
-        sendResponse({ success: true });
-        censorColor = request.sbCensorColor;
-    }
-    else {
-        // Update local variables based on response:
-        sendResponse({ 'bruh': true });
+    console.log(`Message recieved`, request);
+
+    let updated = false;
+    if (Object.prototype.hasOwnProperty.call(request, 'color')) {
         censorColor = request.color;
-        customWords = request.words;
-
-        replace_function(DictionaryJSON, customWords);
+        updated = true;
     }
-    // Change the color of the webpage:
-    changeColor();
+    if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
+        sendResponse({ thresholdSuccess: true });
+        censorThreshold = request.threshold;
+        updated = true;
+    }
+    if (Object.prototype.hasOwnProperty.call(request, 'words')) {
+        customWords = request.words;
+        updated = true;
+    }
+    if (Object.prototype.hasOwnProperty.call(request, 'sb-enabled')) {
+        SB_ENABLED = request["sb-enabled"];
+        updated = true;
+    }
+
+    if (!SB_ENABLED) disableSpoilerBlock();
+
+    sendResponse({ 'success': true });
+    if (updated) blockSpoilers();
 });
 
+const createDictionaryWords = (dictionary_) => {
 
+    let dictionary_words = {};
+
+    for (var i = 0, temp_word; i < dictionary_.length; i++) {
+        temp_word = dictionary_[i];
+        dictionary_words[temp_word.Word] = temp_word;
+    }
+
+    for (const group in customWords) {
+        let wordList = customWords[group];
+        // loop through the sub list:
+        for (let i = 0; i < wordList.length; ++i) {
+            // add each word to the dictionary:
+            if (wordList[i].toLowerCase() !== "") {
+                temp_word = {
+                    Word: wordList[i].toLowerCase(),
+                    Strength: 10 //custom words will get max strength
+                }
+                dictionary_words[temp_word.Word] = temp_word;
+            }
+        }
+    }
+
+    return dictionary_words
+}
 
 //function has been made to go over all of the words and replace them due to
 //   javascript being dumb and how it needs access to the json
 function replace_function(result, customWords) {
-    console.log("Inside replace_function");
-    console.log(result, customWords);
+
+    clearColor();
 
     //// Will make dictionairy out of the JSON turned string made in result
 
@@ -154,9 +270,9 @@ function replace_function(result, customWords) {
         }
     }
 
-    for (const w in dictionary_words) {
-        console.log(dictionary_words[w].Word);
-    }
+    // for (const w in dictionary_words) {
+    //     console.log(dictionary_words[w].Word);
+    // }
 
     // Get all elements from the page:
     var elements = document.getElementsByTagName('*');
@@ -171,58 +287,82 @@ function replace_function(result, customWords) {
                 // Grab the text value:
                 var text = node.nodeValue;
                 // Will store the replaced text:
-                var replacedText = text;
 
                 //need to break up long strings (i.e. replacedText) by spaces to check for individual words
                 var splitText = text.split(" ");
                 //loop going through each word
-                for (var k = 0; k < splitText.length; k += 1) {
+
+                let hasSpoiler = false;
+                for (var k = 0; k < splitText.length && !hasSpoiler; k += 1) {
                     //keys are in lowercase so this fixes the issue of capitalized words
                     let keyWord = splitText[k].toLowerCase();
-                    //if individual word is a key
+
                     if (keyWord in dictionary_words) {
-                        //will replace whole and capitalized whole words that are in result
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word + '\\b'), '<spoiler>');
-                        // Account for capital words:
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.capitalize() + '\\b'), '<spoiler>');
-                        // ACCOUNT FOR UPPERCASE WORDS:
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord].Word.toUpperCase() + '\\b'), '<SPOILER>');
+                        hasSpoiler = true;
 
                     }
-                    //fix for checking plural words (just checking if all but last letter is key)
-                    if (keyWord.slice(0, -1) in dictionary_words) {
-                        // Account for plural words:
-                        console.log(keyWord);
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word + 's' + '\\b'), '<spoiler>');
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.capitalize() + 's' + '\\b'), '<spoiler>');
-                        replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.toUpperCase() + 'S' + '\\b'), '<SPOILER>');
-
+                    if (!hasSpoiler && keyWord.slice(0, -1) in dictionary_words) {
+                        hasSpoiler = true;
                     }
                 }
 
                 // If we changed something, replace element on the page:
-                if (replacedText !== text) {
+                if (hasSpoiler) {
                     // console.log("HERE");
                     element.classList.add('spoiler');
-                    element.replaceChild(document.createTextNode(replacedText), node)
+                    // element.replaceChild(document.createTextNode(replacedText), node)
                 }
             }
         }
     }
     changeColor();
-
-
 }
 
-/*
-//this is how the json can be retreived, changes also had to be made to manifest.json
-fetch(chrome.runtime.getURL('dictionary.json'))
-    .then(r => r.json())
-    //.then(data => console.log(data))
-    .then(data => replace_function(data, customWords)) //calling the function that does all of the work
+/**
+ * Calculate how many augments are needed to transform [word] into [target].
+ * An augment can include an insertion, deletion, and substitution
+ */
+let dp = [];
+export const minAugments = (target, word) => {
 
-*/
+    if (target.length == 0 || word.length == 0)
+        return Math.max(target.length, word.length);
 
+    // update size of dp
+    for (let i = 0; i < dp.length; ++i) {
+        // each row should be size word.length + 1
+        if (dp[i].length < word.length + 1)
+            dp[i] = Array.from(new Array(word.length + 1), _ => 0);
+    }
+    for (let i = dp.length; i < target.length + 1; ++i) {
+        dp.push(Array.from(new Array(word.length + 1), _ => 0));
+    }
+
+    // size of dp should be AT LEAST target.length * word.length
+    if (dp.length < target.length || dp[0].length < word.length) {
+        console.error("DP IS TOO SMALL");
+        return Number.MAX_VALUE;
+    }
+
+    // set th einitial value
+    dp[0][0] = 0;
+    for (let i = 0; i < target.length; ++i) dp[i][0] = i;
+    for (let j = 0; j < word.length; ++j) dp[0][j] = j;
+    for (let i = 1; i < target.length + 1; ++i) {
+        for (let j = 1; j < word.length + 1; ++j) {
+
+            let diff = target[i - 1] != word[j - 1];
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + (diff ? 1 : 0)
+            );
+
+        }
+    }
+
+    return dp[target.length][word.length];
+}
 
 const setupContentReactView = () => {
     // 1. Create the element that will hold our popup

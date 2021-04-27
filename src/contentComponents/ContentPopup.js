@@ -191,7 +191,7 @@ const ContentPopup = () => {
 
     useEffect(() => {
         if (scanStatus == 1) {
-            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_EXCEED_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
+            setTimeout(() => transitionToSpoilerState(SPOILER_STATE_UNDER_THRESHOLD /*SPOILER_STATE_EXCEED_THRESHOLD*/), 1500);
         }
     }, [scanStatus]);
 
