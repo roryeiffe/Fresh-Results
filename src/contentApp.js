@@ -30,18 +30,15 @@ const init = () => {
         if (Object.prototype.hasOwnProperty.call(response, 'color') && response.color != null) {
             // update values based on response:
             censorColor = response.color;
-            sendResponse({ colorSuccess: true });
         }
 
         if (Object.prototype.hasOwnProperty.call(response, 'words') && response.words != null) {
             // update values based on response:
             customWords = response.words;
-            sendResponse({ wordsSuccess: true });
         }
 
-        if (Object.prototype.hasOwnProperty.call(request, 'threshold') && response.threshold != null) {
+        if (Object.prototype.hasOwnProperty.call(response, 'threshold') && response.threshold != null) {
             censorThreshold = response.threshold;
-            sendResponse({ thresholdSuccess: true });
         }
 
         blockSpoilers();
