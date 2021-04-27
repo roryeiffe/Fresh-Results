@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-  
+
     "name": "Spoiler Block",
     "description": "Browser extension that blocks spoilers to TV shows, movies, books, etc.",
     "version": "0.0.1",
@@ -17,9 +17,11 @@
     "content_scripts": [{
         "js": ["contentApp.js"],
         "matches": ["http://*/*", "https://*/*"]
+        },{
+        "js": ["remove.js"],
+        "matches": ["*://*.google.com/*"]
     }],
     "background": {
       "scripts": ["backgroundApp.js"]
     }
   }
-  
