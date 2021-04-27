@@ -39,5 +39,4 @@ const ToggleButton = ({ initialValue, onToggle }) => {
         </div>
     </div>);
 }
-
 export default ToggleButton;

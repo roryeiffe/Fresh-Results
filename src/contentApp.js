@@ -27,10 +27,21 @@ const init = () => {
 
         SB_ENABLED = response["sb-enabled"];
 
-        if (Object.prototype.hasOwnProperty.call(response, 'color')) {
+        if (Object.prototype.hasOwnProperty.call(response, 'color') && request.color != null) {
             // update values based on response:
             censorColor = response.color;
+            sendResponse({ colorSuccess: true });
+        }
+
+        if (Object.prototype.hasOwnProperty.call(response, 'words') && request.words != null) {
+            // update values based on response:
             customWords = response.words;
+            sendResponse({ wordsSuccess: true });
+        }
+
+        if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
+            censorThreshold = request.threshold;
+            sendResponse({ thresholdSuccess: true });
         }
 
         blockSpoilers();
@@ -135,6 +146,7 @@ const blockSpoilers = () => {
 
 var censorColor;
 var customWords;
+var censorThreshold;
 // Change the color of the spoiled texts:
 const changeColor = () => {
     // Get all elements that were labelled as a spoiler:
@@ -178,6 +190,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let updated = false;
     if (Object.prototype.hasOwnProperty.call(request, 'color')) {
         censorColor = request.color;
+        updated = true;
+    }
+    if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
+        sendResponse({ thresholdSuccess: true });
+        censorThreshold = request.threshold;
         updated = true;
     }
     if (Object.prototype.hasOwnProperty.call(request, 'words')) {

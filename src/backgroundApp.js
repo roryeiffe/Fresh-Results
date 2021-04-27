@@ -1,14 +1,22 @@
 let enabled = true;
 let color = "blue";
 let words = { 'default': ['kills', 'steal', 'dies', 'resurrected'] };
+let threshold = 0;
 // define default values:
 const DEFAULT_COLOR = '#FF4747';
 const DEFAULT_WORDS = { 'default': ['kills', 'steal', 'dies', 'resurrected'] };
+const DEFAULT_THRESHOLD = 0;
 
 // update the color with the new color and store it in chrome storage:
 const updateColor = (new_color) => {
     color = new_color;
     chrome.storage.sync.set({ "sb-censor-color": color });
+}
+
+// update threshold with new value and store it in chrome storage
+const updateThreshold = (new_threshold) => {
+    threshold = new_threshold;
+    chrome.storage.sync.set({ "sb-censor-threshold": threshold });
 }
 
 // update words with the new words:
@@ -33,10 +41,19 @@ const startup = () => {
     // data from the local storage
     color = DEFAULT_COLOR;
     words = DEFAULT_WORDS;
+    threshold = DEFAULT_THRESHOLD;
+
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
 
         if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color")) {
             color = res["sb-censor-color"];
+        }
+    });
+
+    chrome.storage.sync.get(`sb-censor-threshold`, (res) => {
+
+        if (Object.prototype.hasOwnProperty.call(res, "sb-censor-threshold")) {
+            threshold = res["sb-censor-threshold"];
         }
     });
     // get custom words from local storage:
@@ -70,22 +87,28 @@ const processPageMount = (request, sender, sendResponse) => {
 
 const processPopupParamsUpdate = (request, sender, sendResponse) => {
     // Take the data from the request:
-    if (request.color == null || request.words == null) {
-        console.error("Color or custom words are null...");
-        sendResponse({ farewell: `Background did not receive the data` });
-    }
-    else {
-        // update values for color and words:
+    // if (request.color == null && request.words == null && request.threshold == null) {
+    //     console.error("Color or custom words are null...");
+    //     sendResponse({ farewell: `Background did not receive the data` });
+    // }
+
+    if (Object.prototype.hasOwnProperty.call(request, 'color') && request['color'] != null) {
         updateColor(request.color);
-        updateWords(request.words);
-
-        // Let the extension know that the background
-        // received the data:
-        sendResponse({ farewell: `Background received the data => ${color} ${words}` });
-
-        // Send the current color to all active tabs
-        sendToActiveTabs({ color: color, words: words }, (response) => { });
     }
+    if (Object.prototype.hasOwnProperty.call(request, 'words') && request['words'] != null) {
+        updateWords(request.words);
+    }
+    if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request['threshold'] != null) {
+        updateThreshold(request.threshold);
+    }
+
+    // Let the extension know that the background
+    // received the data:
+    sendResponse({ farewell: `Background received the data => ${color} ${words}` });
+
+    // Send the current color to all active tabs
+    sendToActiveTabs({ color, words, threshold }, (response) => { });
+
 }
 
 /**

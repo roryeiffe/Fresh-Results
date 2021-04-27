@@ -16,14 +16,14 @@ export default function ColorPicker(props) {
   useEffect(() => {
     // Grab the color from the local state:
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
-        if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color") && color == null) {
-            // set the color state
-            setColor(res["sb-censor-color"]);
-            // pass this color back up to App.js:
-            props.update(res["sb-censor-color"]);
-        }
+      if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color") && color == null) {
+        // set the color state
+        setColor(res["sb-censor-color"]);
+        // pass this color back up to App.js:
+        props.update(res["sb-censor-color"]);
+      }
     });
-  }, [color,props]);
+  }, [color, props]);
 
   // When the user clicks a new color, set the state
   // to match the new color and update App.js
