@@ -5,7 +5,6 @@ import ContentPopup from './contentComponents/ContentPopup';
 import './contentComponents/style.scss';
 
 window.onload = async () => {
-    setupContentReactView();
     init();
 }
 
@@ -14,20 +13,54 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+let SB_ENABLED = false;
 const init = () => {
     // Send a message to the background that the content script is up and running:
-    chrome.runtime.sendMessage({ greeting: "from content", type: 'PAGE_MOUNT' }, function (response) {
-        if (Object.prototype.hasOwnProperty.call(response, 'color')) {
+    chrome.runtime.sendMessage({ type: 'PAGE_MOUNT' }, function (response) {
+        console.log(`Page Mount Response =>`, response);
 
+        // check that the spoiler block is enabled
+        if (!Object.prototype.hasOwnProperty.call(response, "sb-enabled")) {
+            console.error("No specificiation as to whether SpoilerBlock is enabled or disabled.");
+            return;
+        }
+
+        SB_ENABLED = response["sb-enabled"];
+
+        if (Object.prototype.hasOwnProperty.call(response, 'color')) {
             // update values based on response:
             censorColor = response.color;
             customWords = response.words;
-
-            replace_function(DictionaryJSON, customWords);
-            // change the color of the webpage:
-            changeColor();
         }
+
+        blockSpoilers();
     });
+}
+
+const disableSpoilerBlock = () => {
+    // disable the spoiler blocking
+    let spoilers = document.querySelectorAll(".spoiler");
+    // loop through all spoiler elements and color them in:
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+    }
+    // Get all elements that were labelled as a spoiler:
+    spoilers = document.querySelectorAll(".spoiler *");
+    // loop through all spoiler elements and color them in:
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+    }
+}
+
+const blockSpoilers = () => {
+    if (!SB_ENABLED) return;
+
+    // setupContentReactView();
+
+    replace_function(DictionaryJSON, customWords);
+    changeColor();
 }
 
 var censorColor;
@@ -52,24 +85,25 @@ const changeColor = () => {
 
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    // console.log(`Data Recieved from [SpoilerBlock]`, request);
 
-    console.log(`Recieved a message!`, request, sender);
-
-    if (Object.prototype.hasOwnProperty.call(request, 'sbCensorColor')) {
-        sendResponse({ success: true });
-        censorColor = request.sbCensorColor;
-    }
-    else {
-        // Update local variables based on response:
-        sendResponse({ 'bruh': true });
+    let updated = false;
+    if (Object.prototype.hasOwnProperty.call(request, 'color')) {
         censorColor = request.color;
-        customWords = request.words;
-
-        replace_function(DictionaryJSON, customWords);
+        updated = true;
     }
-    // Change the color of the webpage:
-    changeColor();
+    if (Object.prototype.hasOwnProperty.call(request, 'words')) {
+        customWords = request.words;
+        updated = true;
+    }
+    if (Object.prototype.hasOwnProperty.call(request, 'sb-enabled')) {
+        SB_ENABLED = request["sb-enabled"];
+        updated = true;
+    }
+
+    if (!SB_ENABLED) disableSpoilerBlock();
+
+    sendResponse({ 'success': true });
+    if (updated) blockSpoilers();
 });
 
 
@@ -141,7 +175,6 @@ function replace_function(result, customWords) {
                     //fix for checking plural words (just checking if all but last letter is key)
                     if (keyWord.slice(0, -1) in dictionary_words) {
                         // Account for plural words:
-                        console.log(keyWord);
                         replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word + 's' + '\\b'), '<spoiler>');
                         replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.capitalize() + 's' + '\\b'), '<spoiler>');
                         replacedText = replacedText.replace(RegExp('\\b' + dictionary_words[keyWord.slice(0, -1)].Word.toUpperCase() + 'S' + '\\b'), '<SPOILER>');
@@ -162,16 +195,6 @@ function replace_function(result, customWords) {
 
 
 }
-
-/*
-//this is how the json can be retreived, changes also had to be made to manifest.json
-fetch(chrome.runtime.getURL('dictionary.json'))
-    .then(r => r.json())
-    //.then(data => console.log(data))
-    .then(data => replace_function(data, customWords)) //calling the function that does all of the work
-
-*/
-
 
 const setupContentReactView = () => {
     // 1. Create the element that will hold our popup

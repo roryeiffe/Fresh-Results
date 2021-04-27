@@ -1,3 +1,4 @@
+let enabled = true;
 let color = "blue";
 let words = { 'default': ['kills', 'steal', 'dies', 'resurrected'] };
 // define default values:
@@ -16,6 +17,16 @@ const updateWords = (new_words) => {
     chrome.storage.sync.set({ "custom-words": new_words });
 }
 
+const updateEnabled = (enabled_value) => {
+    enabled = enabled_value;
+    chrome.storage.sync.set({ "sb-enabled": enabled_value });
+
+    // send this status to the active tabs
+    sendToActiveTabs({ "sb-enabled": enabled_value }, (response) => {
+        console.log("updateEnabled sendMessage callback", response);
+    });
+}
+
 const startup = () => {
 
     // when the background script starts up, load the
@@ -25,21 +36,25 @@ const startup = () => {
     chrome.storage.sync.get(`sb-censor-color`, (res) => {
 
         if (Object.prototype.hasOwnProperty.call(res, "sb-censor-color")) {
-            updateColor(res["sb-censor-color"]);
+            color = res["sb-censor-color"];
         }
     });
     // get custom words from local storage:
     chrome.storage.sync.get(`custom-words`, (res) => {
 
         if (Object.prototype.hasOwnProperty.call(res, "custom-words")) {
-            updateWords(res["custom-words"]);
+            words = res["custom-words"];
+        }
+    });
+    // get the enabled state from storage
+    chrome.storage.sync.get('sb-enabled', (res) => {
+        if (Object.prototype.hasOwnProperty.call(res, 'sb-enabled')) {
+            enabled = res["sb-enabled"]
         }
     });
     // if data is null, update with the default:
     if (!color) updateColor(DEFAULT_COLOR);
     if (!words) updateWords(DEFAULT_WORDS);
-
-
 }
 
 startup();
@@ -49,7 +64,7 @@ const processPageMount = (request, sender, sendResponse) => {
     if (!sender.tab) return;
     // Send back the color and custom words:
     console.log(`Sending color (${color}) to the content script!`);
-    sendResponse({ color: color, words: words });
+    sendResponse({ color: color, words: words, "sb-enabled": enabled });
 
 }
 
@@ -69,21 +84,42 @@ const processPopupParamsUpdate = (request, sender, sendResponse) => {
         sendResponse({ farewell: `Background received the data => ${color} ${words}` });
 
         // Send the current color to all active tabs
-        chrome.tabs.query({}, (tabs) => {
-            console.log("Sending updated color to all tabs.");
-            for (var i = 0; i < tabs.length; ++i) {
-
-                /**
-                 * This will throw an error for every tab it is unable to find.
-                 * It's fine for now.
-                 */
-                chrome.tabs.sendMessage(tabs[i].id, { color: color, words: words }, (response) => {
-                    // console.log(response);
-                });
-            }
-        });
-
+        sendToActiveTabs({ color: color, words: words }, (response) => { });
     }
+}
+
+/**
+ * @desc Send [message] to all active tabs
+ */
+const sendToActiveTabs = (message, responseCallback) => {
+    chrome.tabs.query({}, (tabs) => {
+        for (var i = 0; i < tabs.length; ++i) {
+            try {
+                chrome.tabs.sendMessage(tabs[i].id, message, responseCallback);
+            }
+            catch (err) { }
+        }
+    });
+}
+
+const handleSBEnableRequest = (request, sender, sendResponse) => {
+    sendResponse({
+        'sb-enabled': enabled
+    });
+}
+
+const handleSBEnableChange = (request, sender, sendResponse) => {
+    if (!Object.prototype.hasOwnProperty.call(request, "sb-enabled")) {
+        console.error("No sb-enabled value provided from popup");
+        sendResponse({
+            error: "No sb-enabled value found",
+            success: false
+        });
+        return;
+    }
+    updateEnabled(request["sb-enabled"]);
+    sendResponse({ success: true });
+
 }
 
 // Listen for incoming messages:
@@ -103,6 +139,12 @@ chrome.runtime.onMessage.addListener(
                 break;
             case "POPUP_PARAMS_UPDATE":
                 processPopupParamsUpdate(request, sender, sendResponse);
+                break;
+            case "SB_ENABLED_REQUEST":
+                handleSBEnableRequest(request, sender, sendResponse);
+                break;
+            case "SB_ENABLED_CHANGE":
+                handleSBEnableChange(request, sender, sendResponse);
                 break;
             default:
                 console.error(`Request type (${request['type']}) not recognized.`);
