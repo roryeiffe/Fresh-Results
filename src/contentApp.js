@@ -153,8 +153,27 @@ const changeColor = () => {
     }
 }
 
+const clearColor = () => {
+
+    let spoilers = document.querySelectorAll(".spoiler *");
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+        spoilers[i].classList.remove('spoiler');
+    }
+
+    spoilers = document.querySelectorAll(".spoiler");
+    for (let i = 0; i < spoilers.length; i++) {
+        spoilers[i].style.color = "";
+        spoilers[i].style.backgroundColor = "";
+        spoilers[i].classList.remove('spoiler');
+    }
+}
+
 // Recieve message from the extension background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+    console.log(`Message recieved`, request);
 
     let updated = false;
     if (Object.prototype.hasOwnProperty.call(request, 'color')) {
@@ -207,6 +226,8 @@ const createDictionaryWords = (dictionary_) => {
 //   javascript being dumb and how it needs access to the json
 function replace_function(result, customWords) {
 
+    clearColor();
+
     //// Will make dictionairy out of the JSON turned string made in result
 
     var dictionary_words = {};
@@ -232,9 +253,9 @@ function replace_function(result, customWords) {
         }
     }
 
-    for (const w in dictionary_words) {
-        console.log(dictionary_words[w].Word);
-    }
+    // for (const w in dictionary_words) {
+    //     console.log(dictionary_words[w].Word);
+    // }
 
     // Get all elements from the page:
     var elements = document.getElementsByTagName('*');
