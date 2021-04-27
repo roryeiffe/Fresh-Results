@@ -27,20 +27,20 @@ const init = () => {
 
         SB_ENABLED = response["sb-enabled"];
 
-        if (Object.prototype.hasOwnProperty.call(response, 'color') && request.color != null) {
+        if (Object.prototype.hasOwnProperty.call(response, 'color') && response.color != null) {
             // update values based on response:
             censorColor = response.color;
             sendResponse({ colorSuccess: true });
         }
 
-        if (Object.prototype.hasOwnProperty.call(response, 'words') && request.words != null) {
+        if (Object.prototype.hasOwnProperty.call(response, 'words') && response.words != null) {
             // update values based on response:
             customWords = response.words;
             sendResponse({ wordsSuccess: true });
         }
 
-        if (Object.prototype.hasOwnProperty.call(request, 'threshold') && request.threshold != null) {
-            censorThreshold = request.threshold;
+        if (Object.prototype.hasOwnProperty.call(request, 'threshold') && response.threshold != null) {
+            censorThreshold = response.threshold;
             sendResponse({ thresholdSuccess: true });
         }
 
