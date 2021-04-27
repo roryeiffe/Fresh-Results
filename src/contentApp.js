@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ContentPopup from './contentComponents/ContentPopup';
 import './contentComponents/style.scss';
-import { domMax } from 'framer-motion';
 
 window.onload = async () => {
     init();
