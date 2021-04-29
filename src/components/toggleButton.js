@@ -16,10 +16,10 @@ import React, { useState, useEffect } from 'react'
  * [onToggle] => The callback function that is executed
  * when the state of the toggle button is changed.
  */
-const ToggleButton = ({ onToggle }) => {
+const ToggleButton = ({ initialValue, onToggle }) => {
 
     // determine whether the toggle button is on / off
-    const [toggleState, setToggleState] = useState(false);
+    const [toggleState, setToggleState] = useState(initialValue);
 
     useEffect(() => {
 
@@ -39,5 +39,4 @@ const ToggleButton = ({ onToggle }) => {
         </div>
     </div>);
 }
-
 export default ToggleButton;

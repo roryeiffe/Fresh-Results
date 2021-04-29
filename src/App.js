@@ -19,6 +19,7 @@ function App() {
   const [color, setColor] = useState(null);
   const [customWords, setCustomWords] = useState(null);
   const [page, setPage] = useState('homePage');
+  const [enabled, setEnabled] = useState(null);
 
   /**
    * This configuration of useEffect is similiar to componentDidMount () 
@@ -27,6 +28,38 @@ function App() {
    * When the app loads, we want to read the stored color from local storage, if
    * it exists. Otherwise, use the default color (first color)
    */
+
+  useEffect(() => {
+
+    // Request from the background script whether or not the app is enabled.
+    chrome.runtime.sendMessage({
+      type: "SB_ENABLED_REQUEST"
+    },
+      (response) => {
+        console.log(`SB_ENABLED_REQUEST response => `, response);
+
+        if (!Object.prototype.hasOwnProperty.call(response, "sb-enabled")) {
+          console.error("No enabled value provided...");
+          return;
+        }
+
+        setEnabled(response["sb-enabled"]);
+      });
+
+  }, []);
+
+  useEffect(() => {
+
+    // send the enabled state to the background script
+    chrome.runtime.sendMessage({
+      type: "SB_ENABLED_CHANGE",
+      "sb-enabled": enabled
+    },
+      (response) => {
+        console.log(`SB ENABLED CHANGE RESPONSE`, response);
+      });
+
+  }, [enabled]);
 
   /**
    * useEffect
@@ -57,20 +90,32 @@ function App() {
     // Send a message to the background script with the color
     // and spoiler threshold values only if data is not null:
     if (color !== null && customWords !== null) {
-      chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
-        // Log the background's response:
-        console.log(response.farewell);
-      });
+      chrome.runtime.sendMessage({
+        type: "POPUP_PARAMS_UPDATE",
+        color: color,
+        threshold: threshold,
+        words: customWords
+      },
+        function (response) {
+          // Log the background's response:
+          console.log(response.farewell);
+        });
     }
   }, [color, threshold, customWords]);
 
   // when custom words are updated, update storage
   const update = (newWords) => {
     setCustomWords(newWords);
-    chrome.runtime.sendMessage({ color: color, threshold: threshold, words: customWords }, function (response) {
-      // Log the background's response:
-      console.log(response.farewell);
-    });
+    chrome.runtime.sendMessage({
+      type: "POPUP_PARAMS_UPDATE",
+      color: color,
+      threshold: threshold,
+      words: customWords
+    },
+      function (response) {
+        // Log the background's response:
+        console.log(response.farewell);
+      });
   }
 
   return (
@@ -87,11 +132,14 @@ function App() {
         {/* Toggle Disable / Enable */}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: `10px 10px`, borderBottom: `1px solid rgba(0, 0, 0, 0.2)`, alignItems: 'center' }}>
           <div style={{ transform: `translateY(-2px)` }}>Toggle Disable / Enable</div>
-          <ToggleButton
-            onToggle={(toggleState) => {
-              console.log(`Button toggled! (new state => ${toggleState})`);
-            }}
-          />
+          {enabled == null ?
+            <div /> :
+            <ToggleButton
+              initialValue={enabled}
+              onToggle={(toggleState) => {
+                setEnabled(toggleState);
+              }}
+            />}
         </div>
 
         <div>
