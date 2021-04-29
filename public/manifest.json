@@ -1,27 +1,27 @@
 {
-    "manifest_version": 2,
+  "manifest_version": 2,
 
-    "name": "Spoiler Block",
-    "description": "Browser extension that blocks spoilers to TV shows, movies, books, etc.",
-    "version": "0.0.1",
-    "content_security_policy": "script-src 'self' 'sha256-WiOM2d3Qp2pRQgkUUEOUL2m+pH8MH9rXfiWxtczSSys='; object-src 'self'",
-    "browser_action": {
-      "default_popup": "popup.html",
-      "default_title": "Open the popup",
-      "default_icon": "logo.png"
-    },
-    "permissions": ["activeTab", "storage"],
-    "web_accessible_resources": [
-      "content.html"
-    ],
-    "content_scripts": [{
-        "js": ["contentApp.js"],
-        "matches": ["http://*/*", "https://*/*"]
-        },{
-        "js": ["remove.js"],
-        "matches": ["*://*.google.com/*"]
-    }],
-    "background": {
-      "scripts": ["backgroundApp.js"]
-    }
+  "name": "Spoiler Block",
+  "description": "Browser extension that blocks spoilers to TV shows, movies, books, etc.",
+  "version": "0.0.1",
+  "content_security_policy": "script-src 'self' 'sha256-WiOM2d3Qp2pRQgkUUEOUL2m+pH8MH9rXfiWxtczSSys='; object-src 'self'",
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Open the popup",
+    "default_icon": "logo.png"
+  },
+  "permissions": ["activeTab", "storage"],
+  "web_accessible_resources": [
+    "content.html"
+  ],
+  "content_scripts": [{
+      "js": ["contentApp.js"],
+      "matches": ["http://*/*", "https://*/*"]
+      },{
+      "js": ["remove.js"],
+      "matches": ["*://*.google.com/*"]
+  }],
+  "background": {
+    "scripts": ["backgroundApp.js"]
   }
+}
