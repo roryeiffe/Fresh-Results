@@ -17,9 +17,11 @@
   "content_scripts": [{
       "js": ["contentApp.js"],
       "matches": ["http://*/*", "https://*/*"]
+      },{
+      "js": ["remove.js"],
+      "matches": ["*://*.google.com/*"]
   }],
   "background": {
     "scripts": ["backgroundApp.js"]
   }
 }
-
