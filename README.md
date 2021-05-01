@@ -5,10 +5,10 @@
 
 | UI Team         | Back-End Team    | Full Stack  |
 | -------------   |:-------------:   | -----:      |
-| Rory Eiffe      | Josh Wildfeuer   | Victoria Savage       |
-| Covenant Faluyi | Ben Unger        | Abdul-Muiz Yusuff       |
-|                 |                  | Serena Chen       |
-
+| Rory Eiffe      | Josh Wildfeuer   | Abdul-Muiz Yusuff (Leader)      |
+| Covenant Faluyi | Ben Unger        |        |
+| Serena Chen                |                  |      |
+| Victoria Savage                |                  |      |
 ### Description
 
 Spoiler Block is a Google Chrome Extension that filters out search result suggestions that "spoil" or reveal plot elements of the media (shows, movies, books, etc.).
@@ -17,7 +17,7 @@ Spoiler Block is a Google Chrome Extension that filters out search result sugges
 
 #### Stakeholders
 * Users - people who want to be "protected" from spoiler search suggestions.
-* Businesses - companies who produce media that can be spoiled, they want their media to garner fame and interest
+* Businesses - companies who produce media that can be spoiled, they want their media to garner fame and interest.
 
 We don't want to charge users for using the extension. However, businesses' interest is to increase popularity for their media. So, we can charge companies to submit lists of key-words to block from search results. Companies don't want their shows to be spoiled, as that will cause people to lose interest.
 
