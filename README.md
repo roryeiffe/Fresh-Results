@@ -46,9 +46,16 @@ Run the following npm commands:
 npm install
 npm run build (run this every time you make changes)
 ```
+Note: for custom builds, you should still run "npm run build *your build name here*"
 - Next, go to chrome://extensions/. 
 - Enable developer mode on the top right of the webpage. 
 - Click "Load Unpacked" on the top left of the webpage.
 - Navigate to the repository directory, and load the build folder. 
 - Optional: pin the extension for quicker access by clicking on the extension icon on the top right of chrome and finding "Spoiler Block". 
 - Test it out by clicking on the Spoiler Block extension. A pop-up should appear.
+
+Playing around with the extension
+- Make sure the toggle switch works
+- If you hover your mouse over the "?" and nothing appears, something may have gone wrong
+- Go to a wikipedia page of a show that you (preferably) have watched, turn on the extension, test out the color selector, put in some words of your own!
+- Happy coding!
